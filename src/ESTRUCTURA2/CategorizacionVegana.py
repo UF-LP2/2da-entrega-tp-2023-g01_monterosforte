@@ -66,3 +66,4 @@ def inicilizacion_Arbol():
     for i in range(0, len(condiciones_arch)):
         Nuevo_Nodo= Tree_Node(condiciones_arch[i][2],condiciones_arch[i][1])
         Arbol_binario.Recur_Insert(Nuevo_Nodo)
+    return Arbol_binario

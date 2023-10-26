@@ -1,25 +1,14 @@
 import random
-from src.ESTRUCTURA1.cPaciente import cPaciente
-from src.ESTRUCTURA1.cPaciente import read_nombre
-from src.ESTRUCTURA1.cPaciente import read_sintomas
-from src.ESTRUCTURA1.TriageVoraz import TriageVoraz 
-from src.ESTRUCTURA1.SalaEsperaVoraz import SalaEsperaVoraz 
-
-from src.ESTRUCTURA2.TriageVegano import Triage_tree, Tree_Node, TriageArbol
+from ESTRUCTURA2.CategorizacionVegana import Triage_tree, Tree_Node, Categorizacion
 from src.ESTRUCTURA2.SalaEsperaDyC import Sala_De_Espera
-
-
-
-
-
-
+from src.ESTRUCTURA2.cPaciente import cPaciente, read_sintomas, read_nombre
 
 
 def main() -> None:
-  #variables auxiliares ESTRUCTURA 1
-  variable = input("elija que forma desea: ")
+
   turno = [2, 5, 1, 3]
- 
+  Posibles_Nombres = read_nombre()
+  posibles_sintomas = read_sintomas()
   pacientes_entrantes = []
 
 # variables auxiliares ESTRUCTURA2
@@ -61,48 +50,29 @@ def main() -> None:
   Arbolito.Recur_Insert(Arbolito.Root, Primer_Nodo17)
   Arbolito.Recur_Insert(Arbolito.Root, Primer_Nodo18)
 
-  if variable == "1": #se decide que estructura usar
-    flag = 1
-    posibles_sintomas = read_sintomas()
-    posibles_nombres = read_nombre()
-    lista_sala_espera = []
+  flag = 1
     
+  while(flag == 1):
+    
+    flag = 1
+    lista_sala_espera = []
+
     while(flag == 1):
 
       for i in range(0, random.randint(0,5)):
         k = random.randint(1,5)
-        nuevo = cPaciente(random.choice(posibles_nombres), random.sample(posibles_sintomas, k))
+        nuevo = cPaciente(random.choice(Posibles_Nombres), random.sample(posibles_sintomas, k))
         pacientes_entrantes.append(nuevo)
 
       cant_enfermeros = random.choice(turno)
       i = 0
       while((len(pacientes_entrantes) > i) and (i != cant_enfermeros)):
-        TriageVoraz(pacientes_entrantes[i],posibles_sintomas)
-        SalaEsperaVoraz(pacientes_entrantes[i], lista_sala_espera)
+        Categorizacion(Arbolito, pacientes_entrantes[i])
         i+=1
-    
-      pacientes_entrantes= pacientes_entrantes[cant_enfermeros+1: len(pacientes_entrantes)-1]
-      ######################################################################################## segundo algoritmo
-    if variable == "2":
-      flag = 1
-      lista_sala_espera = []
-
-      while(flag == 1):
-
-        for i in range(0, random.randint(0,5)):
-          k = random.randint(1,5)
-          nuevo = cPaciente(random.choice(posibles_nombres), random.sample(posibles_sintomas, k))
-          pacientes_entrantes.append(nuevo)
-
-        cant_enfermeros = random.choice(turno)
-        i = 0
-        while((len(pacientes_entrantes) > i) and (i != cant_enfermeros)):
-          TriageArbol(Arbolito, pacientes_entrantes[i])
-          i+=1
-        Sala_De_Espera(pacientes_entrantes[0:cant_enfermeros],lista_sala_espera)
+      Sala_De_Espera(pacientes_entrantes[0:cant_enfermeros],lista_sala_espera)
         
 
-        pacientes_entrantes= pacientes_entrantes[cant_enfermeros+1: len(pacientes_entrantes)-1]
+      pacientes_entrantes= pacientes_entrantes[cant_enfermeros+1: len(pacientes_entrantes)-1]
 
 
 if __name__ == "__main__":

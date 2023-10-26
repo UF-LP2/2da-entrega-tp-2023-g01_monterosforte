@@ -28,7 +28,7 @@ class Triage_tree:
             else:
                 node.Right = node_i
             
-def TriageArbol(nodo:Triage_tree, paciente: cPaciente):#clasificacion
+def Categorizacion(nodo:Triage_tree, paciente: cPaciente):#clasificacion
 
     if not nodo.Root.Left and not nodo.Root.Right:# preguntar nodo actual
         if nodo.Root.valor == 20 or nodo.Root.valor == 30:
@@ -44,7 +44,7 @@ def TriageArbol(nodo:Triage_tree, paciente: cPaciente):#clasificacion
 
     RND = random.randint(0,1)
     if RND == 1: # Si
-        return TriageArbol(nodo.Root.Right, paciente)
+        return Categorizacion(nodo.Root.Right, paciente)
     else: # No
-        return TriageArbol(nodo.Root.Left, paciente)
+        return Categorizacion(nodo.Root.Left, paciente)
     

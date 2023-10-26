@@ -1,9 +1,10 @@
 from src.ESTRUCTURA2.cPaciente import cPaciente
 import random
+import csv
 class Tree_Node:
-    def __init__(self, valor, Pregunta):
+    def __init__(self, Peso, Pregunta):
         self.Pregunta = Pregunta
-        self.valor = valor
+        self.Peso = Peso
         self.Left = None
         self.Right = None
 
@@ -30,21 +31,38 @@ class Triage_tree:
             
 def Categorizacion(nodo:Triage_tree, paciente: cPaciente):#clasificacion
 
-    if not nodo.Root.Left and not nodo.Root.Right:# preguntar nodo actual
-        if nodo.Root.valor == 20 or nodo.Root.valor == 30:
-            paciente.categoria = "rojo"
-        if nodo.Root.valor == 40 or nodo.Root.valor == 55 or nodo.Root.valor == 65:
-            paciente.categoria == "naranja"
-        if nodo.Root.valor == 70 or nodo.Root.valor == 80: 
-            paciente.categoria == "amarillo"
-        if nodo.Root.valor == 95: 
-            paciente.categoria == "verde"
-        if nodo.Root.valor == 105: 
-            paciente.categoria == "azul"
-
-    RND = random.randint(0,1)
-    if RND == 1: # Si
-        return Categorizacion(nodo.Root.Right, paciente)
-    else: # No
-        return Categorizacion(nodo.Root.Left, paciente)
+    if not nodo:  # preguntar nodo actual
+        return 0 #posible excepcion porque deberia haber un arbol, revisar
+    else:
+      RND = random.randint(0,1)
+      if RND == 1: #si
+        print("Esta ", nodo.Root.Pregunta)
+        return nodo.Root.Peso + Categorizacion_recur(nodo.Root.Right)
+      else: #no
+        print("No esta", nodo.Root.Pregunta)
+        return nodo.Root.Peso + Categorizacion_recur(nodo.Root.Left)
+          
     
+def Categorizacion_recur(Nodo: Tree_Node):
+    if not Nodo:
+        return 0
+    else:
+      RND = random.randint(0,1)
+      if RND == 1: #si
+        return Nodo.Peso + Categorizacion_recur(Nodo.Right)
+      else: #no
+        return Nodo.Peso + Categorizacion_recur(Nodo.Left)
+      
+def inicilizacion_Arbol():
+
+    Arbol_binario = Triage_tree()
+
+    condiciones_arch = []
+    with open("Nombres.csv") as file:
+        reader = csv.reader(file)
+        for row in reader:
+            condiciones_arch.append(row)
+
+    for i in range(0, len(condiciones_arch)):
+        Nuevo_Nodo= Tree_Node(condiciones_arch[i][2],condiciones_arch[i][1])
+        Arbol_binario.Recur_Insert(Nuevo_Nodo)

@@ -7,5 +7,3 @@ class cPaciente:
         self.categoria = "blanco"
         self.DNI = DNI
         self.tiempoEspera = tiempoEspera
-
-  

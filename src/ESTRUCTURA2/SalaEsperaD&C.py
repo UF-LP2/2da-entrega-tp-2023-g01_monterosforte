@@ -1,4 +1,4 @@
-from cPaciente import cPaciente
+from src.ESTRUCTURA2.cPaciente import cPaciente
 import random
 
 NSALAS = 20 

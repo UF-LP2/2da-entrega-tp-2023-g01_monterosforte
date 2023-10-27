@@ -67,7 +67,7 @@ def inicilizacion_Arbol():
     Arbol_binario = Triage_tree()
 
     condiciones_arch = leer_sintomas()
-    for i in range(0, len(condiciones_arch)):
+    for i in range(1, len(condiciones_arch)):
         Nuevo_Nodo= Tree_Node(condiciones_arch[i][1],condiciones_arch[i][0])
-        Arbol_binario.Recur_Insert(Arbol_binario.Recur_Insert, Nuevo_Nodo)
+        Arbol_binario.Recur_Insert(Arbol_binario.Root, Nuevo_Nodo)
     return Arbol_binario

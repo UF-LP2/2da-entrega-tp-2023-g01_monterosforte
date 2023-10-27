@@ -1,7 +1,7 @@
 import random
-from ESTRUCTURA2.CategorizacionVegana import Triage_tree, Tree_Node, Categorizacion, inicilizacion_Arbol
+from src.ESTRUCTURA2.CategorizacionVegana import Triage_tree, Tree_Node, Categorizacion, inicilizacion_Arbol, leer_sintomas
 from src.ESTRUCTURA2.SalaEsperaDyC import Sala_De_Espera
-from src.ESTRUCTURA2.cPaciente import cPaciente, read_sintomas, read_nombre
+from src.ESTRUCTURA2.cPaciente import read_nombre
 
 
 def main() -> None:
@@ -9,7 +9,7 @@ def main() -> None:
   # variables auxiliares
   turno = [2, 5, 1, 3]
   Posibles_Nombres = read_nombre()
-  posibles_sintomas = read_sintomas()
+  posibles_sintomas = leer_sintomas()
   pacientes_entrantes = []
   Arbolito = inicilizacion_Arbol()
   flag = 1

@@ -1,4 +1,4 @@
-from src.ESTRUCTURA2.cPaciente import cPaciente
+
 import random
 import csv
 class Tree_Node:
@@ -18,7 +18,7 @@ class Triage_tree:
 
         if not self.Root:
             self.Root = node_i
-        elif node_i.valor < node.valor:
+        elif node_i.Peso < node.Peso:
             if node.Left:
                 self.Recur_Insert(node.Left, node_i)
             else:
@@ -29,7 +29,7 @@ class Triage_tree:
             else:
                 node.Right = node_i
             
-def Categorizacion(nodo:Triage_tree, paciente: cPaciente):#clasificacion
+def Categorizacion(nodo:Triage_tree):#clasificacion
 
     if not nodo:  # preguntar nodo actual
         return 0 #posible excepcion porque deberia haber un arbol, revisar
@@ -58,12 +58,12 @@ def inicilizacion_Arbol():
     Arbol_binario = Triage_tree()
 
     condiciones_arch = []
-    with open("Nombres.csv") as file:
+    with open("Sintomas_nuevos.csv") as file:
         reader = csv.reader(file)
         for row in reader:
             condiciones_arch.append(row)
 
     for i in range(0, len(condiciones_arch)):
-        Nuevo_Nodo= Tree_Node(condiciones_arch[i][2],condiciones_arch[i][1])
+        Nuevo_Nodo= Tree_Node(condiciones_arch[i][1],condiciones_arch[i][0])
         Arbol_binario.Recur_Insert(Nuevo_Nodo)
     return Arbol_binario

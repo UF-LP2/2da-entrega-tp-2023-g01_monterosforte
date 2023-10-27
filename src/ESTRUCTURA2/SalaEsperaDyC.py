@@ -36,19 +36,19 @@ def Sala_De_Espera(listaPacientes, Pac_En_Cola:list[cPaciente]):
             Pac_En_Cola[i].categoria == "rojo"
     ###
     
-def Atender(Pac_En_Cola:cPaciente):
+def Atender(Pac_En_Cola:cPaciente) -> cPaciente:
     if len(Pac_En_Cola) == 0:
         algo = 0
     elif len(Pac_En_Cola) == 1:
-        return Pac_En_Cola
+        return Pac_En_Cola[0]
     elif len(Pac_En_Cola) == 2:
         return Max_prioridad(Pac_En_Cola[0], Pac_En_Cola[1])
     else:
-        return Max_prioridad(Atender(Pac_En_Cola[0:len(Pac_En_Cola)/2]) , Atender(Pac_En_Cola[len(Pac_En_Cola)/2+1:len(Pac_En_Cola)-1]))
+        return Max_prioridad(Atender(Pac_En_Cola[0:int((len(Pac_En_Cola)-1)/2)]), Atender(Pac_En_Cola[int((len(Pac_En_Cola)-1)/2)+1:int(len(Pac_En_Cola))-1]))
 
 
 
-def Max_prioridad(Primer_pac:cPaciente, Segundo_pac:cPaciente): #esta funcion devuelve el paciente con mayor prioridad
+def Max_prioridad(Primer_pac:cPaciente, Segundo_pac:cPaciente) -> cPaciente: #esta funcion devuelve el paciente con mayor prioridad
     
     if Primer_pac.categoria == "rojo" and Segundo_pac.categoria != "rojo":
         return Primer_pac

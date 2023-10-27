@@ -14,20 +14,20 @@ class Triage_tree:
     def __init__(self, Root:Tree_Node = None):
         self.Root = Root
 
-    def Recur_Insert(self, node:Tree_Node, node_i:Tree_Node):
+    def Recur_Insert(self, Nodo_actual:Tree_Node, node_i:Tree_Node):
 
         if not self.Root:
             self.Root = node_i
-        elif node_i.Peso < node.Peso:
-            if node.Left:
-                self.Recur_Insert(node.Left, node_i)
+        elif int(node_i.Peso) < int(Nodo_actual.Peso):
+            if Nodo_actual.Left:
+                self.Recur_Insert(Nodo_actual.Left, node_i)
             else:
-                node.Left = node_i
+                Nodo_actual.Left = node_i
         else:
-            if node.Right:
-                self.Recur_Insert(node.Right, node_i)
+            if Nodo_actual.Right:
+                self.Recur_Insert(Nodo_actual.Right, node_i)
             else:
-                node.Right = node_i
+                Nodo_actual.Right = node_i
             
 def Categorizacion(nodo:Triage_tree):#clasificacion
 
@@ -53,17 +53,21 @@ def Categorizacion_recur(Nodo: Tree_Node):
       else: #no
         return Nodo.Peso + Categorizacion_recur(Nodo.Left)
       
-def inicilizacion_Arbol():
-
-    Arbol_binario = Triage_tree()
-
+def leer_sintomas():
     condiciones_arch = []
-    with open("Sintomas_nuevos.csv") as file:
+    with open(r"Archivos\Sintomas_nuevos.csv") as file:
         reader = csv.reader(file)
         for row in reader:
             condiciones_arch.append(row)
 
+    return condiciones_arch
+
+def inicilizacion_Arbol():
+
+    Arbol_binario = Triage_tree()
+
+    condiciones_arch = leer_sintomas()
     for i in range(0, len(condiciones_arch)):
         Nuevo_Nodo= Tree_Node(condiciones_arch[i][1],condiciones_arch[i][0])
-        Arbol_binario.Recur_Insert(Nuevo_Nodo)
+        Arbol_binario.Recur_Insert(Arbol_binario.Recur_Insert, Nuevo_Nodo)
     return Arbol_binario

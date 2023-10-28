@@ -17,7 +17,11 @@ def Sala_De_Espera(listaPacientes, Pac_En_Cola:list[cPaciente], listaSalas:list[
     for i in range(0, len(listaSalas)):
         if listaSalas[i].disponible:
             Paciente = Atender(Pac_En_Cola)
-            #Pac_En_Cola - Paciente #Esto tira error
+            try:
+              Pac_En_Cola.remove(Paciente)
+            except(ValueError):
+                print(ValueError)
+            
             listaSalas[i].disponible = False #En algun momento hay que poner las salas disponibles otra vez
     
     SimulacionEmpeoramiento(Pac_En_Cola)

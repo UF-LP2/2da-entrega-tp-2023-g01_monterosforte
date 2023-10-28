@@ -9,7 +9,6 @@ def main() -> None:
 
   # variables auxiliares
 
-  turno = [2, 5, 1, 3]
   cont = 0
 
   Posibles_Nombres = read_nombre()
@@ -27,15 +26,21 @@ def main() -> None:
 
   LimSalaEspera = 30
   lista_sala_espera = []
-  cant_enfermeros = 0
-
+  cant_enfermeros = [2, 5, 1, 3]
+  turno_Actual = 0
   while(flag == 1):
 
      #Raro que en cada while cambie. vuelta de while = un turno distinto. Como q pasa muy rapido el tiempo
+    if cont == 1000:    #simulamos que cada 1000 iteraciones del while, cambia el turno
+      print("Cambio de turnos")
+      if turno_Actual == 3:
+        turno_Actual = 0
+      else:
+        turno_Actual += 1
+      cont=0
 
 
-
-    for i in range(0, random.randint(0,cant_enfermeros+2)):
+    for i in range(0, random.randint(0,cant_enfermeros[turno_Actual]+2)):
       nuevo = cPaciente(random.choice(Posibles_Nombres))
       pacientes_entrantes.append(nuevo)
 

@@ -1,4 +1,4 @@
-from src.ESTRUCTURA2.CategorizacionVegana import Categorizacion, Categorizacion_recur, Tree_Node, Triage_tree, inicilizacion_Arbol, leer_sintomas
+from src.ESTRUCTURA2.Categorizacion import Categorizacion, Categorizacion_recur, Tree_Node, Triage_tree, inicilizacion_Arbol, leer_sintomas
 from src.ESTRUCTURA2.cPaciente import read_nombre
 
 def test_leer_nombres():
@@ -16,4 +16,4 @@ def test_leer_sintomas():
 def test_inicializacion_arbol():
     Arbolito = inicilizacion_Arbol()
 
-    assert Arbolito == True
+    assert Arbolito

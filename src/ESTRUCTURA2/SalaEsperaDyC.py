@@ -1,50 +1,38 @@
 from src.ESTRUCTURA2.cPaciente import cPaciente
+from src.ESTRUCTURA2.cSala import cSala
+from src.ESTRUCTURA2.Exceptions import ExcepcionListaVacia
+
 import random
 
-NSALAS = 20 
 PROB_EMPEORAR = 10 
 
-def Sala_De_Espera(listaPacientes, Pac_En_Cola:list[cPaciente]):
+def Sala_De_Espera(listaPacientes, Pac_En_Cola:list[cPaciente], listaSalas:list[cSala]):
 
-    Aux_Salas_Libres = random.randint(0, NSALAS)
+
+    if not listaSalas or not listaPacientes:
+        raise ExcepcionListaVacia
+    
     Pac_En_Cola.append(listaPacientes)
 
-    for i in range(0, Aux_Salas_Libres):
-        Paciente = Atender(Pac_En_Cola)
-        Pac_En_Cola - Paciente
+    for i in range(0, len(listaSalas)):
+        if listaSalas[i].disponible:
+            Paciente = Atender(Pac_En_Cola)
+            #Pac_En_Cola - Paciente #Esto tira error
+            listaSalas[i].disponible = False #En algun momento hay que poner las salas disponibles otra vez
     
-     ### Simulación de empeoramiento. T(n) = --
-    i = random.randint(0, len(Pac_En_Cola)-1)
-    if Pac_En_Cola[i].categoria == "azul":
-        probabilidad = random.randint(0,100)
-        if probabilidad == 50:
-            Pac_En_Cola[i].categoria == "verde"
+    SimulacionEmpeoramiento(Pac_En_Cola)
 
-    if Pac_En_Cola[i].categoria == "verde":
-        probabilidad = random.randint(0,70)
-        if probabilidad == 35:
-            Pac_En_Cola[i].categoria == "amarillo"       
 
-    if Pac_En_Cola[i].categoria == "amarillo":
-        probabilidad = random.randint(0,40)
-        if probabilidad == 20:
-            Pac_En_Cola[i].categoria == "naranja"
-                    
-    if Pac_En_Cola[i].categoria == "naranja":
-        probabilidad = random.randint(0,10)
-        if probabilidad == 5:
-            Pac_En_Cola[i].categoria == "rojo"
-    ###
-    
+
 def Atender(Pac_En_Cola:cPaciente) -> cPaciente:
     if len(Pac_En_Cola) == 0:
-        algo = 0
+        algo = 0 #EXCEPCION - MANDA LISTA VACIA
     elif len(Pac_En_Cola) == 1:
         return Pac_En_Cola[0]
     elif len(Pac_En_Cola) == 2:
         return Max_prioridad(Pac_En_Cola[0], Pac_En_Cola[1])
-    else:
-        return Max_prioridad(Atender(Pac_En_Cola[0:int((len(Pac_En_Cola)-1)/2)]), Atender(Pac_En_Cola[int((len(Pac_En_Cola)-1)/2)+1:int(len(Pac_En_Cola))-1]))
+    
+    return Max_prioridad(Atender(Pac_En_Cola[0:int(len(Pac_En_Cola)/2)]), Atender(Pac_En_Cola[int(len(Pac_En_Cola)/2):int(len(Pac_En_Cola))]))
 
 
 
@@ -55,8 +43,31 @@ def Max_prioridad(Primer_pac:cPaciente, Segundo_pac:cPaciente) -> cPaciente: #es
     elif Primer_pac.categoria != "rojo" and Segundo_pac.categoria == "rojo":
         return Segundo_pac
     else:
-        if Primer_pac.tiempoEspera > Segundo_pac.tiempoEspera: #consideramos el tiempo que han estado esperando los pacientes como un criterio
+        if Primer_pac.tiempoEspera > Segundo_pac.tiempoEspera:
                                                                
             return Segundo_pac
         else:
             return Primer_pac #aca tambien esta considerado que si tienen el mismo tiempo de espera restante se elije arbitrariamente uno de los dos
+        
+def SimulacionEmpeoramiento(Pac_En_Cola: list[cPaciente]):
+    i = random.randint(0, len(Pac_En_Cola)-1)
+    paciente = cPaciente(Pac_En_Cola[i])
+    if paciente.categoria == "azul":
+        probabilidad = random.randint(0,100)
+        if probabilidad == 50:
+            paciente.categoria == "verde"
+
+    if paciente.categoria == "verde":
+        probabilidad = random.randint(0,70)
+        if probabilidad == 35:
+            paciente.categoria == "amarillo"       
+
+    if paciente.categoria == "amarillo":
+        probabilidad = random.randint(0,40)
+        if probabilidad == 20:
+            paciente.categoria == "naranja"
+                    
+    if paciente.categoria == "naranja":
+        probabilidad = random.randint(0,10)
+        if probabilidad == 5:
+            paciente.categoria == "rojo"

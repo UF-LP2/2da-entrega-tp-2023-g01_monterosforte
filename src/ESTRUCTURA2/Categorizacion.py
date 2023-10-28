@@ -1,6 +1,7 @@
 
 import random
 import csv
+#from cPaciente import cPaciente
 class Tree_Node:
     def __init__(self, Peso, Pregunta):
         self.Pregunta = Pregunta
@@ -68,6 +69,13 @@ def inicilizacion_Arbol():
 
     condiciones_arch = leer_sintomas()
     for i in range(1, len(condiciones_arch)):
-        Nuevo_Nodo= Tree_Node(condiciones_arch[i][1],condiciones_arch[i][0])
+        Nuevo_Nodo = Tree_Node(condiciones_arch[i][1],condiciones_arch[i][0])
         Arbol_binario.Recur_Insert(Arbol_binario.Root, Nuevo_Nodo)
     return Arbol_binario
+
+#def TriageArbol(Paciente:cPaciente, NodoRaiz:Tree_Node):
+
+    #PesoTotal = Categorizacion_recur(NodoRaiz)
+    #if PesoTotal > 0 and PesoTotal <= 40:
+       #Paciente.categoria = "rojo"
+    #elif PesoTotal>40 and PesoTotal <= 

@@ -2,7 +2,7 @@
 import random
 import csv
 from src.ESTRUCTURA2.Exceptions import ExcepcionNodoVacio
-#from cPaciente import cPaciente
+from src.ESTRUCTURA2.cPaciente import cPaciente
 class Tree_Node:
     def __init__(self, Peso, Pregunta):
         self.Pregunta = Pregunta
@@ -74,9 +74,12 @@ def inicilizacion_Arbol():
         Arbol_binario.Recur_Insert(Arbol_binario.Root, Nuevo_Nodo)
     return Arbol_binario
 
-#def TriageArbol(Paciente:cPaciente, NodoRaiz:Tree_Node):
+"""def TriageArbol(Paciente:cPaciente, NodoRaiz:Tree_Node):
 
-    #PesoTotal = Categorizacion_recur(NodoRaiz)
-    #if PesoTotal > 0 and PesoTotal <= 40:
-       #Paciente.categoria = "rojo"
-    #elif PesoTotal>40 and PesoTotal <= 
+    PesoTotal = Categorizacion(NodoRaiz)
+    if PesoTotal > 90 and PesoTotal <= 186:
+       Paciente.categoria = "rojo"
+    elif PesoTotal >= 199 and PesoTotal <=313:
+        Paciente.categoria = "naranja"
+    elif PesoTotal >=326 and PesoTotal <= 
+"""

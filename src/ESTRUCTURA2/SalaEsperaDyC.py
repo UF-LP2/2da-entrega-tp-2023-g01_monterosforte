@@ -16,13 +16,14 @@ def Sala_De_Espera(listaPacientes, Pac_En_Cola:list[cPaciente], listaSalas:list[
 
     for i in range(0, len(listaSalas)):
         if listaSalas[i].disponible:
-            Paciente = Atender(Pac_En_Cola)
             try:
-              Pac_En_Cola.remove(Paciente)
-            except(ValueError):
-                print(ValueError)
-            
-            listaSalas[i].disponible = False #En algun momento hay que poner las salas disponibles otra vez
+                Paciente = Atender(Pac_En_Cola)
+                Pac_En_Cola.remove(Paciente)
+            except ValueError:
+                print("Error: No se encuentra el paciente en la sala de espera")
+            except ExcepcionListaVacia as e:
+                print(str(e))
+            listaSalas[i].disponible = False
     
     SimulacionEmpeoramiento(Pac_En_Cola)
 
@@ -30,7 +31,7 @@ def Sala_De_Espera(listaPacientes, Pac_En_Cola:list[cPaciente], listaSalas:list[
 
 def Atender(Pac_En_Cola:cPaciente) -> cPaciente:
     if len(Pac_En_Cola) == 0:
-        algo = 0 #EXCEPCION - MANDA LISTA VACIA
+        raise ExcepcionListaVacia
     elif len(Pac_En_Cola) == 1:
         return Pac_En_Cola[0]
     elif len(Pac_En_Cola) == 2:

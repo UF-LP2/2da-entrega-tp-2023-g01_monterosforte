@@ -46,7 +46,6 @@ def test_Atender2(): #Lista IMPAR.
     listaPacientes.append(pac5)
 
     paciente = Atender(listaPacientes)
-
     assert paciente == pac1
 
 def test_SalaDeEspera1(): #Obtiene lista VACIA.

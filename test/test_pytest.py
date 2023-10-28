@@ -1,5 +1,7 @@
 from src.ESTRUCTURA2.Categorizacion import Categorizacion, Categorizacion_recur, Tree_Node, Triage_tree, inicilizacion_Arbol, leer_sintomas
 from src.ESTRUCTURA2.cPaciente import read_nombre
+from src.ESTRUCTURA2.Exceptions import ExcepcionNodoVacio
+import pytest
 
 def test_leer_nombres():
     Posibles_nombres = read_nombre()
@@ -17,3 +19,10 @@ def test_inicializacion_arbol():
     Arbolito = inicilizacion_Arbol()
 
     assert Arbolito
+
+def test_categorizacion(): # Mando nodo vacio.
+
+    nodo = Triage_tree()
+
+    with pytest.raises(ExcepcionNodoVacio):
+        Categorizacion(nodo)

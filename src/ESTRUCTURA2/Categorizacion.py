@@ -1,6 +1,7 @@
 
 import random
 import csv
+from src.ESTRUCTURA2.Exceptions import ExcepcionNodoVacio
 #from cPaciente import cPaciente
 class Tree_Node:
     def __init__(self, Peso, Pregunta):
@@ -30,18 +31,18 @@ class Triage_tree:
             else:
                 Nodo_actual.Right = node_i
             
-def Categorizacion(nodo:Triage_tree):#clasificacion
+def Categorizacion(arbol:Triage_tree):#clasificacion
 
-    if not nodo:  # preguntar nodo actual
-        return 0 #posible excepcion porque deberia haber un arbol, revisar
+    if not arbol or not arbol.Root:  # preguntar nodo actual
+        raise ExcepcionNodoVacio #posible excepcion porque deberia haber un arbol, revisar
     else:
       RND = random.randint(0,1)
       if RND == 1: #si
-        print("Esta ", nodo.Root.Pregunta)
-        return nodo.Root.Peso + Categorizacion_recur(nodo.Root.Right)
+        print("Esta ", arbol.Root.Pregunta)
+        return arbol.Root.Peso + Categorizacion_recur(arbol.Root.Right)
       else: #no
-        print("No esta", nodo.Root.Pregunta)
-        return nodo.Root.Peso + Categorizacion_recur(nodo.Root.Left)
+        print("No esta", arbol.Root.Pregunta)
+        return arbol.Root.Peso + Categorizacion_recur(arbol.Root.Left)
           
     
 def Categorizacion_recur(Nodo: Tree_Node):

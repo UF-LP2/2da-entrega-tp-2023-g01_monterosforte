@@ -10,6 +10,7 @@ def main() -> None:
   # variables auxiliares
 
   turno = [2, 5, 1, 3]
+  cont = 0
 
   Posibles_Nombres = read_nombre()
   pacientes_entrantes = []
@@ -26,14 +27,18 @@ def main() -> None:
 
   LimSalaEspera = 30
   lista_sala_espera = []
+  cant_enfermeros = 0
 
   while(flag == 1):
 
-    for i in range(0, random.randint(0,5)):
+     #Raro que en cada while cambie. vuelta de while = un turno distinto. Como q pasa muy rapido el tiempo
+
+
+
+    for i in range(0, random.randint(0,cant_enfermeros+2)):
       nuevo = cPaciente(random.choice(Posibles_Nombres))
       pacientes_entrantes.append(nuevo)
 
-    cant_enfermeros = random.choice(turno) #Raro que en cada while cambie. vuelta de while = un turno distinto. Como q pasa muy rapido el tiempo
     i = 0
 
     while(len(pacientes_entrantes) > i and i != cant_enfermeros):
@@ -45,19 +50,24 @@ def main() -> None:
 
     Sala_De_Espera(pacientes_entrantes[0:cant_enfermeros],lista_sala_espera, listaSalas)
         
-    SimulacionTiempo(lista_sala_espera)
+    SimulacionTiempo(lista_sala_espera, listaSalas)
 
     pacientes_entrantes = pacientes_entrantes[cant_enfermeros: len(pacientes_entrantes)]
 
     if len(lista_sala_espera) == LimSalaEspera:
       print("Sala ociosa/supera el limite")
 
-def SimulacionTiempo(listaSalaEspera:list[cPaciente]):
+def SimulacionTiempo(listaSalaEspera:list[cPaciente], listaSalas: list[cSala]):
 
   for i in range(0,len(listaSalaEspera)):
     listaSalaEspera[i].tiempoEspera -= 2
     if listaSalaEspera[i].tiempoEspera < 0:
       print("Se le acabo el tiempo. Categoria: ", listaSalaEspera[i].categoria)
+
+  for i in range(0, len(listaSalas)):
+    listaSalas[i].tiempoOcupado -= 2
+    if listaSalas[i].tiempoOcupado == 0:
+      listaSalas[i].disponible == True  
 
 
 

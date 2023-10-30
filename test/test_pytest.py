@@ -1,5 +1,5 @@
-from src.ESTRUCTURA2.Categorizacion import Categorizacion, Categorizacion_recur, Tree_Node, Triage_tree, inicilizacion_Arbol, leer_sintomas
-from src.ESTRUCTURA2.cPaciente import read_nombre
+from src.ESTRUCTURA2.Categorizacion import Categorizacion, Categorizacion_recur, Tree_Node, Triage_tree, inicilizacion_Arbol, leer_sintomas, TriageArbol
+from src.ESTRUCTURA2.cPaciente import read_nombre, cPaciente
 from src.ESTRUCTURA2.Exceptions import ExcepcionNodoVacio
 import pytest
 
@@ -26,3 +26,24 @@ def test_categorizacion(): # Mando nodo vacio.
 
     with pytest.raises(ExcepcionNodoVacio):
         Categorizacion(nodo)
+
+def test_TriageArbol():
+    Arbolito = inicilizacion_Arbol()
+    Paciente = cPaciente("a", 123, 123456)
+    PesoTotal = TriageArbol(Paciente, Arbolito)
+
+    if PesoTotal > 0 and PesoTotal <= 55:
+         assert Paciente.categoria == "rojo"
+         assert Paciente.tiempoEspera == 0
+    elif PesoTotal > 55 and PesoTotal <=110:
+         assert Paciente.categoria == "naranja"
+         assert Paciente.tiempoEspera == 10
+    elif PesoTotal > 110 and PesoTotal <=177:
+         assert Paciente.categoria == "amarillo"
+         assert Paciente.tiempoEspera == 60
+    elif PesoTotal > 177 and PesoTotal <= 215:
+         assert Paciente.categoria == "verde"
+         assert Paciente.tiempoEspera == 120
+    else:
+         assert Paciente.categoria == "azul"
+         assert Paciente.tiempoEspera == 240

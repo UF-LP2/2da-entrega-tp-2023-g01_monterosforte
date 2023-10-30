@@ -4,17 +4,18 @@ from src.ESTRUCTURA2.Exceptions import ExcepcionListaVacia
 
 import random
 
-PROB_EMPEORAR = 10 
 
 def Sala_De_Espera(listaPacientes, Pac_En_Cola:list[cPaciente], listaSalas:list[cSala]):
 
 
-    if not listaSalas or not listaPacientes:
+    if not listaSalas:
         raise ExcepcionListaVacia
     
     Pac_En_Cola.append(listaPacientes)
 
-    for i in range(0, len(listaSalas)):
+    i = 0
+
+    while(i<len(listaSalas) and len(Pac_En_Cola) > 0):
         if listaSalas[i].disponible:
             try:
                 Paciente = Atender(Pac_En_Cola)
@@ -24,8 +25,12 @@ def Sala_De_Espera(listaPacientes, Pac_En_Cola:list[cPaciente], listaSalas:list[
             except ExcepcionListaVacia as e:
                 print(str(e))
             listaSalas[i].disponible = False
+            listaSalas[i].tiempoOcupado = 10
+        i += 1
     
-    SimulacionEmpeoramiento(Pac_En_Cola)
+
+    if len(Pac_En_Cola) >= 1:
+        SimulacionEmpeoramiento(Pac_En_Cola)
 
 
 
@@ -43,20 +48,23 @@ def Atender(Pac_En_Cola:cPaciente) -> cPaciente:
 
 def Max_prioridad(Primer_pac:cPaciente, Segundo_pac:cPaciente) -> cPaciente: #esta funcion devuelve el paciente con mayor prioridad
     
-    if Primer_pac.categoria == "rojo" and Segundo_pac.categoria != "rojo":
-        return Primer_pac
-    elif Primer_pac.categoria != "rojo" and Segundo_pac.categoria == "rojo":
-        return Segundo_pac
+    pac1 = cPaciente(Primer_pac)
+    pac2 = cPaciente(Segundo_pac)
+    if pac1.categoria == "rojo" and pac2.categoria != "rojo":
+        return pac1
+    elif pac1.categoria != "rojo" and pac2.categoria == "rojo":
+        return pac2
     else:
-        if Primer_pac.tiempoEspera > Segundo_pac.tiempoEspera:
+        if pac1.tiempoEspera > pac2.tiempoEspera:
                                                                
-            return Segundo_pac
+            return pac2
         else:
-            return Primer_pac #aca tambien esta considerado que si tienen el mismo tiempo de espera restante se elije arbitrariamente uno de los dos
+            return pac1 #aca tambien esta considerado que si tienen el mismo tiempo de espera restante se elije arbitrariamente uno de los dos
         
 def SimulacionEmpeoramiento(Pac_En_Cola: list[cPaciente]):
-    i = random.randint(0, len(Pac_En_Cola)-1)
-    paciente = cPaciente(Pac_En_Cola[i])
+    
+    paciente = cPaciente(random.choice(Pac_En_Cola))
+
     if paciente.categoria == "azul":
         probabilidad = random.randint(0,100)
         if probabilidad == 50:

@@ -19,7 +19,7 @@ def main() -> None:
 
   Arbolito = inicilizacion_Arbol()
   
-  NSalas = 5 #Así podemos cambiarlo más fácil
+  NSalas = 4 #Así podemos cambiarlo más fácil
   listaSalas = []
   for i in range(0, NSalas): #Cargo la lista de salas. Inicialmente todas disponibles.
     sala = cSala(True)

@@ -5,13 +5,17 @@ from src.ESTRUCTURA2.Exceptions import ExcepcionListaVacia
 import random
 
 
-def Sala_De_Espera(listaPacientes, Pac_En_Cola:list[cPaciente], listaSalas:list[cSala]):
+def Sala_De_Espera(listaPacientes, Pac_En_Cola: list[cPaciente], listaSalas:list[cSala]):
 
 
     if not listaSalas:
         raise ExcepcionListaVacia
     
-    Pac_En_Cola.append(listaPacientes)
+    i=0
+
+    while(i != len(listaPacientes)):
+        Pac_En_Cola.append(listaPacientes[i])
+        i+=1
 
     i = 0
 
@@ -48,22 +52,21 @@ def Atender(Pac_En_Cola:cPaciente) -> cPaciente:
 
 def Max_prioridad(Primer_pac:cPaciente, Segundo_pac:cPaciente) -> cPaciente: #esta funcion devuelve el paciente con mayor prioridad
     
-    pac1 = cPaciente(Primer_pac)
-    pac2 = cPaciente(Segundo_pac)
-    if pac1.categoria == "rojo" and pac2.categoria != "rojo":
-        return pac1
-    elif pac1.categoria != "rojo" and pac2.categoria == "rojo":
-        return pac2
+    if Primer_pac.categoria == "rojo" and Segundo_pac.categoria != "rojo":
+        return Primer_pac
+    elif Primer_pac.categoria != "rojo" and Segundo_pac.categoria == "rojo":
+        return Segundo_pac
     else:
-        if pac1.tiempoEspera > pac2.tiempoEspera:
+        if Primer_pac.tiempoEspera > Segundo_pac.tiempoEspera:
                                                                
-            return pac2
+            return Segundo_pac
         else:
-            return pac1 #aca tambien esta considerado que si tienen el mismo tiempo de espera restante se elije arbitrariamente uno de los dos
+            return Primer_pac #aca tambien esta considerado que si tienen el mismo tiempo de espera restante se elije arbitrariamente uno de los dos
         
 def SimulacionEmpeoramiento(Pac_En_Cola: list[cPaciente]):
     
-    paciente = cPaciente(random.choice(Pac_En_Cola))
+    paciente = random.choice(Pac_En_Cola)
+
 
     if paciente.categoria == "azul":
         probabilidad = random.randint(0,100)

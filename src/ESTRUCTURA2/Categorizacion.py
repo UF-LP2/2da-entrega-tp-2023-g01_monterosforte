@@ -57,7 +57,7 @@ def Categorizacion_recur(Nodo: Tree_Node, RndVector:list) -> int:
       
 def leer_sintomas():
     condiciones_arch = []
-    with open(r"Archivos\Sintomas_nuevos.csv") as file:
+    with open(r"Archivos\SIntomas_nuevos.csv") as file:
         reader = csv.reader(file)
         for row in reader:
             condiciones_arch.append(row)

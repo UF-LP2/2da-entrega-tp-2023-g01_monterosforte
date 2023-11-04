@@ -19,9 +19,9 @@ def main() -> None:
 
   Arbolito = inicilizacion_Arbol()
   
-  NSalas = 4 #Así podemos cambiarlo más fácil
+  NSalas = 4 ###
   listaSalas = []
-  for i in range(0, NSalas): #Cargo la lista de salas. Inicialmente todas disponibles.
+  for i in range(0, NSalas): ###
     sala = cSala(True)
     listaSalas.append(sala)
 
@@ -78,7 +78,7 @@ def main() -> None:
 def SimulacionTiempo(listaSalaEspera:list[cPaciente], listaSalas: list[cSala]):
 
   for i in range(0,len(listaSalaEspera)):
-    paciente = cPaciente(listaSalaEspera[i])
+    paciente = listaSalaEspera[i]
     paciente.tiempoEspera -= 2
     if paciente.tiempoEspera < 0:
       print("Se le acabo el tiempo. Categoria: ", paciente.categoria)

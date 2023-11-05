@@ -33,6 +33,8 @@ def main() -> None:
   turno_Actual = 0
   while(flag == 1):
 
+    ####  ESTO HAY QUE SACARLO Y SINCRONIZARLO CON LA INTERFAZ
+
      #Raro que en cada while cambie. vuelta de while = un turno distinto. Como q pasa muy rapido el tiempo
     if cont == 1000:    #simulamos que cada 1000 iteraciones del while, cambia el turno
       print("Cambio de turnos")
@@ -42,6 +44,7 @@ def main() -> None:
         turno_Actual += 1
       cont=0
 
+    ###
 
     for i in range(0, random.randint(0,cant_enfermeros[turno_Actual])):
       nuevo = cPaciente(random.choice(Posibles_Nombres))

@@ -22,16 +22,19 @@ class cHospitalApp(QMainWindow):
 
         self.turnoString =""
         self.Posibles_Nombres = read_nombre()
-        self.pacientesRecepcion = []
+        #self.pacientesRecepcion = []
         self.Arbolito = inicilizacion_Arbol()
+        LimSalaEspera = 30
+        lista_sala_espera = [] ### pacientes que va a manejar la sala de espera
+        CantidadEnfermeros = 0 # esto tiene que cambiar segun el ingreso de la Spinbox
+        self.cantNSalas = 0  # aqui se almacenan la cantidad de salas para usar en funcion SalaEsperaDyC, se le carga el valor de la spinbox al apretar [generar plano]
 
         ########
-
 
         self.setGeometry(self.ejex, self.ejey, self.ancho, self.altura)
         self.setWindowTitle('Salas de Espera')
 
-
+        ###creamos los botones, labels, etc
         self.labelNumSalas = QLabel("Cantidad de salas:")
         self.selectorNumSalas = QSpinBox()
         self.selectorNumSalas.setMaximum(15)
@@ -63,6 +66,9 @@ class cHospitalApp(QMainWindow):
 
         layout1 = QGridLayout()
         layout1.addWidget(self.planoHospital)
+
+        ###
+
 
         # Agregamos botones y labels
         layout2 = QVBoxLayout()
@@ -114,8 +120,8 @@ class cHospitalApp(QMainWindow):
         self.botonIniciar.setEnabled(True)
         self.botonPausar.setEnabled(False)
 
-        cantNSalas = self.selectorNumSalas.value()
-        self.planoHospital.cantSalasMedicos = cantNSalas
+        self.cantNSalas = self.selectorNumSalas.value()
+        self.planoHospital.cantSalasMedicos = self.cantNSalas
         self.turnoString = self.selectorTurno.currentText()
         
 

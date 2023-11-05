@@ -7,8 +7,13 @@ class cPainter(QWidget): #Va a dibujar el plano
 
 	def __init__(self):
 		super().__init__()
+
+		### decidimos como funciona el tamanio de lo que dibujamos (salas)
 		self.setSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.MinimumExpanding)
 		self.painter = QPainter()
+
+		###creamos e inicializamos las variables que usaremos a continuacion
+
 		self.planoGenerado = False
 		self.botonIniciarApretado = False
 		self.cantSalasMedicos = 0
@@ -27,6 +32,8 @@ class cPainter(QWidget): #Va a dibujar el plano
 
 		self.puntitos = []
 		self.puntitosTotales = []
+
+		###
 
 	def paintEvent(self, event):
 
@@ -92,9 +99,21 @@ class cPainter(QWidget): #Va a dibujar el plano
 
 	def actualizarPacientes(self):
 
-		
+		'''
 		XSEspera = random.randint(int(self.width()/2), int(self.width()/2 + self.AnchoSEspera)-10)
 		YSEspera = random.randint(int(self.height()/2), int(self.height()/2 + self.AlturaSEspera) -10)
+
 		color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
 		self.puntitos.append((XSEspera, YSEspera, color))
+		'''
+
+		XSRecepcion = int(self.width()/2 -self.AnchoPasillo - self.AnchoSRecepcion)
+		YSRecepcion = int((self.height() + self.AlturaSEspera - self.AlturaSRecepcion)/2)
+
+		XUSRecepcion = random.randint(XSRecepcion, int(XSRecepcion + self.AnchoSRecepcion)-10)
+		YUSRecepcion = random.randint(YSRecepcion, int(YSRecepcion + self.AlturaSRecepcion)-10)
+
+		color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+		self.puntitos.append((XUSRecepcion, YUSRecepcion, color))
+
 		self.update()

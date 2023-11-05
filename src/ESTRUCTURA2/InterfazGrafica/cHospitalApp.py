@@ -3,7 +3,7 @@ from PyQt6.QtGui import QPainter, QColor, QBrush
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QPushButton, QVBoxLayout, QSpinBox, QLabel, QGridLayout, QComboBox, QSizePolicy
 
 from src.ESTRUCTURA2.InterfazGrafica.cPainter import cPainter
-from src.ESTRUCTURA2.cSala import cSala
+
 
 class cHospitalApp(QMainWindow):
     CantActualEnfermeros= 0
@@ -19,7 +19,7 @@ class cHospitalApp(QMainWindow):
         self.ejey = 100
 
         ### variables auxiliares
-        self.listaSalas = []
+     
 
 
         self.setGeometry(self.ejex, self.ejey, self.ancho, self.altura)
@@ -119,11 +119,6 @@ class cHospitalApp(QMainWindow):
         cantNSalas = self.selectorNumSalas.value()
         self.planoHospital.cantSalasMedicos = cantNSalas
 
-
-        for i in range(0, cantNSalas): #se crean las salas que van a ser manejadas en SalaEspera
-            sala = cSala(True)
-            self.listaSalas.append(sala)
-
         self.planoHospital.update()
 
     
@@ -161,8 +156,8 @@ class cHospitalApp(QMainWindow):
         self.timer_Triage_SalaEspera.timeout.connect(lambda:self.planoHospital.ActualizarPacientes_SalaEspera(self.CantActualEnfermeros))
         self.timer_Triage_SalaEspera.start(3000)
 
-        self.timer_SalaEspera.timeout.connect(lambda:self.planoHospital.ActualizacionSEsepera_2(self.CantActualEnfermeros, self.listaSalas))
-
+        self.timer_SalaEspera.timeout.connect(lambda:self.planoHospital.ActualizacionSEsepera_2())
+        self.timer_SalaEspera.start(1000)
 
 
     def generarPausa(self):

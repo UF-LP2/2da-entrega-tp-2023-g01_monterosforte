@@ -78,7 +78,7 @@ def main() -> None:
       print("Sala ociosa/supera el limite")
       raise Exception
 
-def SimulacionTiempo(listaSalaEspera:list[cPaciente], listaSalas: list[cSala]):
+def SimulacionTiempo(listaSalaEspera:list[cPaciente], listaSalas: list):
 
   for i in range(0,len(listaSalaEspera)):
     paciente = listaSalaEspera[i]
@@ -87,10 +87,10 @@ def SimulacionTiempo(listaSalaEspera:list[cPaciente], listaSalas: list[cSala]):
       print("Se le acabo el tiempo. Categoria: ", paciente.categoria)
 
   for i in range(0, len(listaSalas)):
-    if listaSalas[i].disponible == False:
-      listaSalas[i].tiempoOcupado -= 2
-      if listaSalas[i].tiempoOcupado == 0:
-        listaSalas[i].disponible = True
+    if listaSalas[i][0].disponible == False:
+      listaSalas[i][0].tiempoOcupado -= 2
+      if listaSalas[i][0].tiempoOcupado == 0:
+        listaSalas[i][0].disponible = True
 
 
 

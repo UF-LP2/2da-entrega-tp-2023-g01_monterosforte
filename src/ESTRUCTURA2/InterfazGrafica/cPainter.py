@@ -5,6 +5,7 @@ import random
 from src.ESTRUCTURA2.cPaciente import cPaciente, read_nombre
 from src.ESTRUCTURA2.Categorizacion import inicilizacion_Arbol, TriageArbol
 from src.ESTRUCTURA2.SalaEsperaDyC import Sala_De_Espera, ExcepcionListaVacia
+from src.ESTRUCTURA2.cSala import cSala
 
 class cPainter(QWidget): #Va a dibujar el plano
 
@@ -42,6 +43,7 @@ class cPainter(QWidget): #Va a dibujar el plano
 		self.Posibles_Nombres = read_nombre()
 		self.Arbolito = inicilizacion_Arbol()
 		self.pacientesSEspera = [] ### pacientes que va a manejar la sala de espera
+		self.listaSalas = []
 
 
 
@@ -92,19 +94,23 @@ class cPainter(QWidget): #Va a dibujar el plano
 			YSMedico = YSEspera - self.AlturaSMedico
 			
 			for i in range(0, self.cantSalasMedicos):
+
 				self.painter.drawRect(int(XSMedico) + i*int(self.AnchoSMedico), int(YSMedico), int(self.AnchoSMedico), int(self.AlturaSMedico))
+				sala = (cSala(True), int(XSMedico+ (self.AnchoSMedico/2) + i*(self.AnchoSMedico)), int(YSMedico+ (self.AlturaSMedico/2)))
+
+				self.listaSalas.append(sala)
 
 		if self.botonIniciarApretado:
 
 			self.painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
 			for i in range(0, len(self.PuntitosRecepcion)):
-				x, y, color = self.PuntitosRecepcion[i]
+				x, y, color = self.PuntitosRecepcion[i][0] , self.PuntitosRecepcion[i][1], self.PuntitosRecepcion[i][2]
 				self.painter.setBrush(QBrush(QColor(*color)))
 				self.painter.drawEllipse(x, y, 10, 10)
 
 			for i in range(0, len(self.PuntitosSEspera)):
-				x, y, color = self.PuntitosSEspera[i]
+				x, y, color = self.PuntitosSEspera[i][0], self.PuntitosSEspera[i][1], self.PuntitosSEspera[i][2]
 				self.painter.setBrush(QBrush(QColor(*color)))
 				self.painter.drawEllipse(x, y, 10, 10)
 
@@ -113,7 +119,7 @@ class cPainter(QWidget): #Va a dibujar el plano
 		self.painter.end()
 
 	def actualizarPacientes(self, CantEnfermeros:int):
-
+		listita =[]
 		for i in range(0, random.randint(0,CantEnfermeros)):
 			nuevo = cPaciente(random.choice(self.Posibles_Nombres))
 			self.pacientesRecepcion.append(nuevo)
@@ -125,13 +131,16 @@ class cPainter(QWidget): #Va a dibujar el plano
 			YUSRecepcion = random.randint(YSRecepcion, int(YSRecepcion + self.AlturaSRecepcion)-10)
 
 			color = (200, 200, 200)
-			self.PuntitosRecepcion.append((XUSRecepcion, YUSRecepcion, color))
+			listita.append(XUSRecepcion)
+			listita.append(YUSRecepcion)
+			listita.append(color)
+			self.PuntitosRecepcion.append(listita)
 		
 
 		self.update()
 	
 	def ActualizarPacientes_SalaEspera(self, CantEnfermeros):
-
+		listita = []
 		i = 0
 		while(len(self.pacientesRecepcion) > i and i != CantEnfermeros):
 			TriageArbol(self.pacientesRecepcion[i], self.Arbolito)
@@ -150,7 +159,10 @@ class cPainter(QWidget): #Va a dibujar el plano
 			elif self.pacientesRecepcion[i].categoria == "azul":
 				color1 = (0, 0, 255)
 
-			self.PuntitosSEspera.append((XSEspera, YSEspera, color1))
+			listita.append(XSEspera)
+			listita.append(YSEspera)
+			listita.append(color1)
+			self.PuntitosSEspera.append(listita)
 
 			if len(self.PuntitosRecepcion) > 0:
 				self.PuntitosRecepcion.pop()
@@ -159,9 +171,9 @@ class cPainter(QWidget): #Va a dibujar el plano
 		
 		self.update()
 	
-	def ActualizacionSEsepera_2(self, CantEnfermeros, listaSalas):
+	def ActualizacionSEsepera_2(self):
 		try:
-			Sala_De_Espera(self.pacientesRecepcion[0:CantEnfermeros],self.pacientesSEspera, listaSalas, self.PuntitosSEspera)
+			Sala_De_Espera(self.pacientesRecepcion[0:len(self.PuntitosSEspera)],self.pacientesSEspera, self.listaSalas, self.PuntitosSEspera)
 		except ExcepcionListaVacia as e:
 			print(str(e))
 		

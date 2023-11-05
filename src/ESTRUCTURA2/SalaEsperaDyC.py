@@ -2,13 +2,11 @@ from src.ESTRUCTURA2.cPaciente import cPaciente
 from src.ESTRUCTURA2.cSala import cSala
 from src.ESTRUCTURA2.Exceptions import ExcepcionListaVacia
 
-from src.ESTRUCTURA2.InterfazGrafica.cPainter import cPainter
 
 import random
 
 
-def Sala_De_Espera(listaPacientes, Pac_En_Cola: list[cPaciente], listaSalas:list[cSala], PuntitosSEspera):
-
+def Sala_De_Espera(listaPacientes, Pac_En_Cola: list[cPaciente], listaSalas:list, PuntitosSEspera):
 
     if not listaSalas:
         raise ExcepcionListaVacia
@@ -22,16 +20,20 @@ def Sala_De_Espera(listaPacientes, Pac_En_Cola: list[cPaciente], listaSalas:list
     i = 0
 
     while(i<len(listaSalas) and len(Pac_En_Cola) > 0):
-        if listaSalas[i].disponible:
+        if listaSalas[i][0].disponible:
             try:
                 Paciente = Atender(Pac_En_Cola)
+                aux = Pac_En_Cola.index(Paciente)
+                
+                PuntitosSEspera[aux][0] = listaSalas[i][1] #al atender al paciente se mueve el puntito a adentro
+                PuntitosSEspera[aux][1] = listaSalas[i][2] #de la sala de espera correspondiente
                 Pac_En_Cola.remove(Paciente)
             except ValueError:
                 print("Error: No se encuentra el paciente en la sala de espera")
             except ExcepcionListaVacia as e:
                 print(str(e))
-            listaSalas[i].disponible = False
-            listaSalas[i].tiempoOcupado = 10
+            listaSalas[i][0].disponible = False
+            listaSalas[i][0].tiempoOcupado = 10
         i += 1
     
 

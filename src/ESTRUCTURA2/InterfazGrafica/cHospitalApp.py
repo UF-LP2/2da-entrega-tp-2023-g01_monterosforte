@@ -102,6 +102,7 @@ class cHospitalApp(QMainWindow):
 
         self.timer_EntradaPacientes = QTimer(self) #timer de entrada de pacientes a recepcion
         self.timer_Triage_SalaEspera = QTimer(self) #timer de pasaje de recepcion a sala de espera 
+        self.timer_SalaEspera = QTimer(self)
 
 
 
@@ -159,6 +160,8 @@ class cHospitalApp(QMainWindow):
 
         self.timer_Triage_SalaEspera.timeout.connect(lambda:self.planoHospital.ActualizarPacientes_SalaEspera(self.CantActualEnfermeros))
         self.timer_Triage_SalaEspera.start(3000)
+
+        self.timer_SalaEspera.timeout.connect(lambda:self.planoHospital.ActualizacionSEsepera_2(self.CantActualEnfermeros, self.listaSalas))
 
 
 

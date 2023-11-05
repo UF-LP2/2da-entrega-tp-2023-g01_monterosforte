@@ -41,9 +41,7 @@ class cPainter(QWidget): #Va a dibujar el plano
 		self.pacientesRecepcion = []
 		self.Posibles_Nombres = read_nombre()
 		self.Arbolito = inicilizacion_Arbol()
-		LimSalaEspera = 30
 		self.pacientesSEspera = [] ### pacientes que va a manejar la sala de espera
-		CantidadEnfermeros = 0 # esto tiene que cambiar segun el ingreso de la Spinbox
 
 
 
@@ -161,8 +159,10 @@ class cPainter(QWidget): #Va a dibujar el plano
 		
 		self.update()
 	
-	def ActualizacionSEsepera_2(self, CantEnfermeros):
+	def ActualizacionSEsepera_2(self, CantEnfermeros, listaSalas):
 		try:
-			Sala_De_Espera(self.pacientesRecepcion[0:CantEnfermeros],self.pacientesSEspera, listaSalas)
+			Sala_De_Espera(self.pacientesRecepcion[0:CantEnfermeros],self.pacientesSEspera, listaSalas, self.PuntitosSEspera)
 		except ExcepcionListaVacia as e:
 			print(str(e))
+		
+		self.update()

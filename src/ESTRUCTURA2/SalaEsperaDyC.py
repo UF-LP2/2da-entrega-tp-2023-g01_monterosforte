@@ -2,10 +2,12 @@ from src.ESTRUCTURA2.cPaciente import cPaciente
 from src.ESTRUCTURA2.cSala import cSala
 from src.ESTRUCTURA2.Exceptions import ExcepcionListaVacia
 
+from src.ESTRUCTURA2.InterfazGrafica.cPainter import cPainter
+
 import random
 
 
-def Sala_De_Espera(listaPacientes, Pac_En_Cola: list[cPaciente], listaSalas:list[cSala]):
+def Sala_De_Espera(listaPacientes, Pac_En_Cola: list[cPaciente], listaSalas:list[cSala], PuntitosSEspera):
 
 
     if not listaSalas:

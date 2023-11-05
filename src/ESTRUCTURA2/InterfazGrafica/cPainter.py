@@ -4,6 +4,7 @@ from PyQt6.QtCore import Qt, QTimer
 import random
 from src.ESTRUCTURA2.cPaciente import cPaciente, read_nombre
 from src.ESTRUCTURA2.Categorizacion import inicilizacion_Arbol, TriageArbol
+from src.ESTRUCTURA2.SalaEsperaDyC import Sala_De_Espera, ExcepcionListaVacia
 
 class cPainter(QWidget): #Va a dibujar el plano
 
@@ -41,7 +42,7 @@ class cPainter(QWidget): #Va a dibujar el plano
 		self.Posibles_Nombres = read_nombre()
 		self.Arbolito = inicilizacion_Arbol()
 		LimSalaEspera = 30
-		lista_sala_espera = [] ### pacientes que va a manejar la sala de espera
+		self.pacientesSEspera = [] ### pacientes que va a manejar la sala de espera
 		CantidadEnfermeros = 0 # esto tiene que cambiar segun el ingreso de la Spinbox
 
 
@@ -152,9 +153,16 @@ class cPainter(QWidget): #Va a dibujar el plano
 				color1 = (0, 0, 255)
 
 			self.PuntitosSEspera.append((XSEspera, YSEspera, color1))
+
 			if len(self.PuntitosRecepcion) > 0:
 				self.PuntitosRecepcion.pop()
 
 			i += 1
 		
 		self.update()
+	
+	def ActualizacionSEsepera_2(self, CantEnfermeros):
+		try:
+			Sala_De_Espera(self.pacientesRecepcion[0:CantEnfermeros],self.pacientesSEspera, listaSalas)
+		except ExcepcionListaVacia as e:
+			print(str(e))

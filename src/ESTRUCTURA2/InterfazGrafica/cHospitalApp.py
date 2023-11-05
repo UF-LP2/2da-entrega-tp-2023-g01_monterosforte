@@ -3,6 +3,7 @@ from PyQt6.QtGui import QPainter, QColor, QBrush
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QPushButton, QVBoxLayout, QSpinBox, QLabel, QGridLayout, QComboBox, QSizePolicy
 
 from src.ESTRUCTURA2.InterfazGrafica.cPainter import cPainter
+from src.ESTRUCTURA2.cSala import cSala
 
 class cHospitalApp(QMainWindow):
     CantActualEnfermeros= 0
@@ -18,7 +19,7 @@ class cHospitalApp(QMainWindow):
         self.ejey = 100
 
         ### variables auxiliares
-
+        self.listaSalas = []
 
 
         self.setGeometry(self.ejex, self.ejey, self.ancho, self.altura)
@@ -99,11 +100,14 @@ class cHospitalApp(QMainWindow):
         self.botonIniciar.clicked.connect(self.generarSimulacion)
         self.botonPausar.clicked.connect(self.generarPausa)
 
-        self.timer1 = QTimer(self) #timer de entrada de pacientes a recepcion
-        self.timer2 = QTimer(self) #timer de pasaje de recepcion a sala de espera 
+        self.timer_EntradaPacientes = QTimer(self) #timer de entrada de pacientes a recepcion
+        self.timer_Triage_SalaEspera = QTimer(self) #timer de pasaje de recepcion a sala de espera 
+
 
 
     def generarPlano(self):
+        self.planoHospital.PuntitosRecepcion.clear() 
+        self.planoHospital.PuntitosSEspera.clear()
 
         self.planoHospital.planoGenerado = True
         self.planoHospital.botonIniciarApretado = False
@@ -115,13 +119,19 @@ class cHospitalApp(QMainWindow):
         self.planoHospital.cantSalasMedicos = cantNSalas
 
 
+        for i in range(0, cantNSalas): #se crean las salas que van a ser manejadas en SalaEspera
+            sala = cSala(True)
+            self.listaSalas.append(sala)
+
         self.planoHospital.update()
 
     
-    def generarSimulacion(self):
+    def generarSimulacion(self):#esta funcion ocurre al apretar el boton iniciar
 
-        self.planoHospital.PuntitosRecepcion.clear() 
+        
         self.botonPausar.setEnabled(True)
+        self.botonIniciar.setEnabled(False)
+        self.botonGenerarPlano.setEnabled(False)
 
         self.planoHospital.botonIniciarApretado = True
         self.planoHospital.planoGenerado = True
@@ -133,12 +143,7 @@ class cHospitalApp(QMainWindow):
 
 
 
-
-
-
-
-
-        turnoString = self.selectorTurno.currentText()
+        turnoString = self.selectorTurno.currentText() #Se traduce el turno a la cantidad de enfermeros
         if turnoString == "23 a 6 hs":
             self.CantActualEnfermeros = 1
         elif turnoString == "6 a 10 hs":
@@ -149,12 +154,16 @@ class cHospitalApp(QMainWindow):
             self.CantActualEnfermeros = 3
 
 
-        self.timer1.timeout.connect(lambda:self.planoHospital.actualizarPacientes(self.CantActualEnfermeros))
-        self.timer1.start(1000)
+        self.timer_EntradaPacientes.timeout.connect(lambda:self.planoHospital.actualizarPacientes(self.CantActualEnfermeros))
+        self.timer_EntradaPacientes.start(1000)
 
-        self.timer2.timeout.connect(lambda:self.planoHospital.ActualizarPacientes_SalaEspera(self.CantActualEnfermeros))
-        self.timer2.start(3000)
+        self.timer_Triage_SalaEspera.timeout.connect(lambda:self.planoHospital.ActualizarPacientes_SalaEspera(self.CantActualEnfermeros))
+        self.timer_Triage_SalaEspera.start(3000)
+
+
 
     def generarPausa(self):
-        self.timer1.stop()  # Detener el temporizador anterior
-        self.planoHospital.PuntitosRecepcion.clear() 
+        self.botonPausar.setEnabled(False)
+        self.botonGenerarPlano.setEnabled(True)
+        self.timer_EntradaPacientes.stop()  # Detener el temporizador de recepcion
+        self.timer_Triage_SalaEspera.stop() #Detener el temporizador de sala de espera

@@ -2,6 +2,8 @@ from PyQt6.QtWidgets import QWidget, QSizePolicy
 from PyQt6.QtGui import QPainter, QPen, QColor, QBrush
 from PyQt6.QtCore import Qt, QTimer
 import random
+from src.ESTRUCTURA2.cPaciente import cPaciente, read_nombre
+from src.ESTRUCTURA2.Categorizacion import inicilizacion_Arbol, TriageArbol
 
 class cPainter(QWidget): #Va a dibujar el plano
 
@@ -30,10 +32,19 @@ class cPainter(QWidget): #Va a dibujar el plano
 		self.AlturaPasillo = 0
 		self.AnchoSRecepcion = 0
 
-		self.puntitos = []
+		self.PuntitosRecepcion = []
+		self.PuntitosSEspera = []
 		self.puntitosTotales = []
 
-		###
+		### variables relacionadas a pacientes
+		self.pacientesRecepcion = []
+		self.Posibles_Nombres = read_nombre()
+		self.Arbolito = inicilizacion_Arbol()
+		LimSalaEspera = 30
+		lista_sala_espera = [] ### pacientes que va a manejar la sala de espera
+		CantidadEnfermeros = 0 # esto tiene que cambiar segun el ingreso de la Spinbox
+
+
 
 	def paintEvent(self, event):
 
@@ -88,8 +99,13 @@ class cPainter(QWidget): #Va a dibujar el plano
 
 			self.painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
-			for i in range(0, len(self.puntitos)):
-				x, y, color = self.puntitos[i]
+			for i in range(0, len(self.PuntitosRecepcion)):
+				x, y, color = self.PuntitosRecepcion[i]
+				self.painter.setBrush(QBrush(QColor(*color)))
+				self.painter.drawEllipse(x, y, 10, 10)
+
+			for i in range(0, len(self.PuntitosSEspera)):
+				x, y, color = self.PuntitosSEspera[i]
 				self.painter.setBrush(QBrush(QColor(*color)))
 				self.painter.drawEllipse(x, y, 10, 10)
 
@@ -97,23 +113,48 @@ class cPainter(QWidget): #Va a dibujar el plano
 
 		self.painter.end()
 
-	def actualizarPacientes(self):
+	def actualizarPacientes(self, CantEnfermeros:int):
 
-		'''
-		XSEspera = random.randint(int(self.width()/2), int(self.width()/2 + self.AnchoSEspera)-10)
-		YSEspera = random.randint(int(self.height()/2), int(self.height()/2 + self.AlturaSEspera) -10)
+		for i in range(0, random.randint(0,CantEnfermeros)):
+			nuevo = cPaciente(random.choice(self.Posibles_Nombres))
+			self.pacientesRecepcion.append(nuevo)
 
-		color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-		self.puntitos.append((XSEspera, YSEspera, color))
-		'''
+			XSRecepcion = int(self.width()/2 -self.AnchoPasillo - self.AnchoSRecepcion)
+			YSRecepcion = int((self.height() + self.AlturaSEspera - self.AlturaSRecepcion)/2)
 
-		XSRecepcion = int(self.width()/2 -self.AnchoPasillo - self.AnchoSRecepcion)
-		YSRecepcion = int((self.height() + self.AlturaSEspera - self.AlturaSRecepcion)/2)
+			XUSRecepcion = random.randint(XSRecepcion, int(XSRecepcion + self.AnchoSRecepcion)-10)
+			YUSRecepcion = random.randint(YSRecepcion, int(YSRecepcion + self.AlturaSRecepcion)-10)
 
-		XUSRecepcion = random.randint(XSRecepcion, int(XSRecepcion + self.AnchoSRecepcion)-10)
-		YUSRecepcion = random.randint(YSRecepcion, int(YSRecepcion + self.AlturaSRecepcion)-10)
+			color = (200, 200, 200)
+			self.PuntitosRecepcion.append((XUSRecepcion, YUSRecepcion, color))
+		
 
-		color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-		self.puntitos.append((XUSRecepcion, YUSRecepcion, color))
+		self.update()
+	
+	def ActualizarPacientes_SalaEspera(self, CantEnfermeros):
 
+		i = 0
+		while(len(self.pacientesRecepcion) > i and i != CantEnfermeros):
+			TriageArbol(self.pacientesRecepcion[i], self.Arbolito)
+
+			XSEspera = random.randint(int(self.width()/2), int(self.width()/2 + self.AnchoSEspera)-10)
+			YSEspera = random.randint(int(self.height()/2), int(self.height()/2 + self.AlturaSEspera) -10)
+
+			if self.pacientesRecepcion[i].categoria == "rojo":
+				color1 = (255, 0, 0)
+			elif self.pacientesRecepcion[i].categoria == "naranja":
+				color1 = (255, 128, 0)
+			elif self.pacientesRecepcion[i].categoria == "amarillo":
+				color1 = (255, 255, 0)
+			elif self.pacientesRecepcion[i].categoria == "verde":
+				color1 = (0, 255, 0)
+			elif self.pacientesRecepcion[i].categoria == "azul":
+				color1 = (0, 0, 255)
+
+			self.PuntitosSEspera.append((XSEspera, YSEspera, color1))
+			if len(self.PuntitosRecepcion) > 0:
+				self.PuntitosRecepcion.pop()
+
+			i += 1
+		
 		self.update()

@@ -93,6 +93,6 @@ def TriageArbol(Paciente:cPaciente, Arbol:Triage_tree):
     else:
         Paciente.categoria = "azul"
         Paciente.tiempoEspera = 240
+    
     print(Paciente.categoria)
-
     return PesoTotal

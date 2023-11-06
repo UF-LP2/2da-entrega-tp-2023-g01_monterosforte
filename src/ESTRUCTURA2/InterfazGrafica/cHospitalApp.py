@@ -18,47 +18,53 @@ class cHospitalApp(QMainWindow):
         self.ejex = 100
         self.ejey = 100
 
-        ### variables auxiliares
-     
-
+        self.botonPausarApretado = False
 
         self.setGeometry(self.ejex, self.ejey, self.ancho, self.altura)
-        self.setWindowTitle('Salas de Espera')
+        self.setWindowTitle('SIMULACION')
+        
 
         ###creamos los botones, labels, etc
         self.labelNumSalas = QLabel("Cantidad de salas:")
+        self.labelNumSalas.setStyleSheet('background-color: rgb(173, 216, 230); color: black; font-weight: bold; font-size: 11pt;')
+        self.labelNumSalas.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.selectorNumSalas = QSpinBox()
         self.selectorNumSalas.setMaximum(15)
         self.selectorNumSalas.setMinimum(1)
+        self.selectorNumSalas.setStyleSheet('color: black; font-size: 11pt;')
 
         self.botonGenerarPlano = QPushButton()
         self.botonGenerarPlano.setGeometry(90, 90, 20, 15)
         self.botonGenerarPlano.setText("GENERAR PLANO DEL HOSPITAL")
+        self.botonGenerarPlano.setStyleSheet('color: black; font-weight: bold; font-size: 11pt;')
 
         self.labelTurno = QLabel("Seleccione turno:")
+        self.labelTurno.setStyleSheet('background-color: rgb(173, 216, 230); color: black; font-weight: bold; font-size: 11pt;')
+        self.labelTurno.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.selectorTurno = QComboBox()
         self.selectorTurno.addItem("23 a 6 hs")
         self.selectorTurno.addItem("6 a 10 hs")
         self.selectorTurno.addItem("10 a 16 hs")
         self.selectorTurno.addItem("16 a 23 hs")
+        self.selectorTurno.setStyleSheet('color: black; font-size: 11pt;')
 
         self.botonIniciar = QPushButton()
         self.botonIniciar.setGeometry(90,90,20,15)
         self.botonIniciar.setText("INICIAR")
         self.botonIniciar.setEnabled(False)
+        self.botonIniciar.setStyleSheet('color: black; font-weight: bold; font-size: 11pt;')
 
         self.botonPausar = QPushButton()
         self.botonPausar.setGeometry(90, 90, 20, 15)
-        self.botonPausar.setText("PAUSAR")
+        self.botonPausar.setText("TERMINAR")
         self.botonPausar.setEnabled(False)
+        self.botonPausar.setStyleSheet('color: black; font-weight: bold; font-size: 11pt;')
 
 
         self.planoHospital = cPainter()
 
         layout1 = QGridLayout()
         layout1.addWidget(self.planoHospital)
-
-        ###
 
 
         # Agregamos botones y labels
@@ -144,14 +150,13 @@ class cHospitalApp(QMainWindow):
 
 
         self.timer_EntradaPacientes.timeout.connect(lambda:self.planoHospital.actualizarPacientes(self.CantActualEnfermeros))
-        self.timer_EntradaPacientes.start(1001)
+        self.timer_EntradaPacientes.start(1000)
         
         self.timer_Triage_SalaEspera.timeout.connect(lambda:self.planoHospital.ActualizarPacientes_SalaEspera(self.CantActualEnfermeros))
         self.timer_Triage_SalaEspera.start(1000)
 
 
     def generarPausa(self):
-        self.botonPausar.setEnabled(False)
-        self.botonGenerarPlano.setEnabled(True)
+
         self.timer_EntradaPacientes.stop()  # Detener el temporizador de recepcion
         self.timer_Triage_SalaEspera.stop() #Detener el temporizador de sala de espera

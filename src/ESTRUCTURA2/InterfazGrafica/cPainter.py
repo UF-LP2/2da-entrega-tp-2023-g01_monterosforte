@@ -1,7 +1,7 @@
 import typing
 from PyQt6 import QtGui
 from PyQt6.QtWidgets import QWidget, QSizePolicy
-from PyQt6.QtGui import QPainter, QPen, QColor, QBrush
+from PyQt6.QtGui import QPainter, QPen, QColor, QBrush, QFont
 from PyQt6.QtCore import Qt, QTimer
 import random
 from src.ESTRUCTURA2.cPaciente import cPaciente, read_nombre
@@ -87,7 +87,7 @@ class cPainter(QWidget): #Va a dibujar el plano
 			self.painter.drawRect(int(XSRecepcion), int(YSRecepcion), int(self.AnchoSRecepcion), int(self.AlturaSRecepcion)) #DIBUJO SALA DE RECEPCION
 
 			EspacioSEspera_SMedico = 15
-			self.AnchoSMedico = int((self.AnchoSEspera - 2*EspacioSEspera_SMedico)/self.cantSalasMedicos)
+			self.AnchoSMedico = int((self.AnchoSEspera - 2*EspacioSEspera_SMedico)/self.cantSalasMedicos)  #DIBUJO SALAS DE MEDICOS
 			self.AlturaSMedico = self.AnchoSMedico
 
 			if self.AnchoSMedico > 70:
@@ -103,13 +103,32 @@ class cPainter(QWidget): #Va a dibujar el plano
 				sala = (cSala(True), int(XSMedico + (self.AnchoSMedico/2) + i*(self.AnchoSMedico)), int(YSMedico+ (self.AlturaSMedico/2)))
 				if len(self.listaSalas) < self.cantSalasMedicos:
 					self.listaSalas.append(sala)
+			font = QFont("Arial", 12)
+			font.setBold(True)
+			font.setItalic(True)
+			self.painter.setFont(font)
+			self.painter.setPen(QColor(0,0,0))
+			XContadorSE = XSEspera + self.AnchoSEspera/2
+			YContadorSE = YSEspera + self.AlturaSEspera + 20
+			self.painter.drawText(int(XContadorSE), int(YContadorSE), f"Cantidad en sala: {len(self.PuntitosSEspera)}")
+
+			XContadorSR = XSRecepcion + self.AnchoSRecepcion/2
+			YContadorSR = YSRecepcion + self.AlturaSRecepcion + 20
+			self.painter.drawText(int(XContadorSR), int(YContadorSR), f"Cantidad en sala: {len(self.PuntitosRecepcion)}")
 
 		if self.botonIniciarApretado:
 
 			self.painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
 			for i in range(0, len(self.PuntitosRecepcion)):
-				x, y, color = self.PuntitosRecepcion[i][0] , self.PuntitosRecepcion[i][1], self.PuntitosRecepcion[i][2]
+				XSRecepcion = int(self.width()/2 -self.AnchoPasillo - self.AnchoSRecepcion)
+				YSRecepcion = int((self.height() + self.AlturaSEspera - self.AlturaSRecepcion)/2)
+
+				XUSRecepcion = random.randint(XSRecepcion, int(XSRecepcion + self.AnchoSRecepcion)-10)
+				YUSRecepcion = random.randint(YSRecepcion, int(YSRecepcion + self.AlturaSRecepcion)-10)
+				
+				#x, y, color = self.PuntitosRecepcion[i][0] , self.PuntitosRecepcion[i][1], self.PuntitosRecepcion[i][2]
+				x, y, color = XUSRecepcion , YUSRecepcion, self.PuntitosRecepcion[i][2]
 				self.painter.setBrush(QBrush(QColor(*color)))
 				self.painter.drawEllipse(x, y, 10, 10)
 

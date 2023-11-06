@@ -53,6 +53,9 @@ def test_SalaDeEspera1(): #Obtiene lista VACIA.
     listaPacientes = [] 
     PacEnCola = []
     listaSalas = []
+    listaPuntitos1 = []
+    listaPuntitos2 = []
+
 
     with pytest.raises(ExcepcionListaVacia):
-        Sala_De_Espera(listaPacientes, PacEnCola, listaSalas)
+        Sala_De_Espera(listaPacientes, PacEnCola, listaSalas, listaPuntitos1, listaPuntitos2)

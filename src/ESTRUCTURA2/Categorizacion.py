@@ -33,7 +33,7 @@ class Triage_tree:
             
 def Categorizacion(arbol:Triage_tree) -> int:#clasificacion
 
-    RndVector = [0,1,1,1,1,1] #Aca manejamos la probabilidad (1: derecha, 0: izquierda)
+    RndVector = [0,1,1,1,1] #Aca manejamos la probabilidad (1: derecha, 0: izquierda)
 
     if not arbol or not arbol.Root:  # preguntar nodo actual
         raise ExcepcionNodoVacio
@@ -80,7 +80,7 @@ def TriageArbol(Paciente:cPaciente, Arbol:Triage_tree):
     
     if PesoTotal > 0 and PesoTotal <= 55:
         Paciente.categoria = "rojo"
-        Paciente.tiempoEspera = 0
+        Paciente.tiempoEspera = 1
 
     elif PesoTotal > 55 and PesoTotal <=110:
         Paciente.categoria = "naranja"

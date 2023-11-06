@@ -1,4 +1,4 @@
-from src.ESTRUCTURA2.SalaEsperaDyC import Sala_De_Espera, Atender, Max_prioridad
+from src.ESTRUCTURA2.SalaEsperaDyC import Sala_De_Espera, Atender
 from src.ESTRUCTURA2.cPaciente import cPaciente
 import pytest
 from src.ESTRUCTURA2.Exceptions import ExcepcionListaVacia

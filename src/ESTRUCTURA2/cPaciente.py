@@ -3,7 +3,7 @@ import csv
 
 def read_nombre():
     nombres = []
-    with open(r"Archivos\Nombres.csv") as file:
+    with open("Nombres.csv") as file:
         reader = csv.reader(file)
         for row in reader:
             nombres.append(row)

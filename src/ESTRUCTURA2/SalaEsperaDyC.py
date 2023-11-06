@@ -6,7 +6,7 @@ from src.ESTRUCTURA2.Exceptions import ExcepcionListaVacia
 import random
 
 
-def Sala_De_Espera(listaPacientes, Pac_En_Cola: list[cPaciente], listaSalas:list, PuntitosSEspera):
+def Sala_De_Espera(listaPacientes:list[cPaciente], Pac_En_Cola: list[cPaciente], listaSalas:list, PuntitosSEspera:list, PuntitosSMedico: list):
 
     if not listaSalas:
         raise ExcepcionListaVacia
@@ -15,30 +15,43 @@ def Sala_De_Espera(listaPacientes, Pac_En_Cola: list[cPaciente], listaSalas:list
 
     while(i != len(listaPacientes)):
         Pac_En_Cola.append(listaPacientes[i])
+
         i+=1
 
     i = 0
 
     while(i<len(listaSalas) and len(Pac_En_Cola) > 0):
-        if listaSalas[i][0].disponible:
+        listita = []
+        if listaSalas[i][0].disponible == True:
             try:
                 Paciente = Atender(Pac_En_Cola)
                 aux = Pac_En_Cola.index(Paciente)
                 
-                PuntitosSEspera[aux][0] = listaSalas[i][1] #al atender al paciente se mueve el puntito a adentro
-                PuntitosSEspera[aux][1] = listaSalas[i][2] #de la sala de espera correspondiente
+                x = listaSalas[i][1] # X #al atender al paciente se mueve el puntito a adentro
+                y = listaSalas[i][2] # Y #de la sala de espera correspondiente
+                color = PuntitosSEspera[aux][2]
+                enSala = i
+                listita.append(x)
+                listita.append(y)
+                listita.append(color)
+                listita.append(enSala)
+
+                PuntitosSMedico.append(listita.copy())
+                PuntitosSEspera.remove(PuntitosSEspera[aux])
                 Pac_En_Cola.remove(Paciente)
             except ValueError:
                 print("Error: No se encuentra el paciente en la sala de espera")
             except ExcepcionListaVacia as e:
                 print(str(e))
+
             listaSalas[i][0].disponible = False
-            listaSalas[i][0].tiempoOcupado = 10
+            listaSalas[i][0].tiempoOcupado = 2
         i += 1
     
 
+
     if len(Pac_En_Cola) >= 1:
-        SimulacionEmpeoramiento(Pac_En_Cola)
+        SimulacionEmpeoramiento(Pac_En_Cola, PuntitosSEspera)
 
 
 
@@ -67,27 +80,32 @@ def Max_prioridad(Primer_pac:cPaciente, Segundo_pac:cPaciente) -> cPaciente: #es
         else:
             return Primer_pac #aca tambien esta considerado que si tienen el mismo tiempo de espera restante se elije arbitrariamente uno de los dos
         
-def SimulacionEmpeoramiento(Pac_En_Cola: list[cPaciente]):
+def SimulacionEmpeoramiento(Pac_En_Cola: list[cPaciente], PuntitosSEspera):
     
-    paciente = random.choice(Pac_En_Cola)
+    #paciente = random.choice(Pac_En_Cola)
+    i = random.randint(0, len(Pac_En_Cola)-1)
 
-
-    if paciente.categoria == "azul":
+    if Pac_En_Cola[i].categoria == "azul":
         probabilidad = random.randint(0,100)
         if probabilidad == 50:
-            paciente.categoria == "verde"
+            Pac_En_Cola[i].categoria == "verde"
+            PuntitosSEspera[i][2] = (0, 255, 0)
+            
 
-    if paciente.categoria == "verde":
+    if Pac_En_Cola[i].categoria == "verde":
         probabilidad = random.randint(0,70)
         if probabilidad == 35:
-            paciente.categoria == "amarillo"       
+            Pac_En_Cola[i].categoria == "amarillo"
+            PuntitosSEspera[i][2] = (255, 255, 0)       
 
-    if paciente.categoria == "amarillo":
+    if Pac_En_Cola[i].categoria == "amarillo":
         probabilidad = random.randint(0,40)
         if probabilidad == 20:
-            paciente.categoria == "naranja"
+            Pac_En_Cola[i].categoria == "naranja"
+            PuntitosSEspera[i][2] = (255, 128, 0)
                     
-    if paciente.categoria == "naranja":
+    if Pac_En_Cola[i].categoria == "naranja":
         probabilidad = random.randint(0,10)
         if probabilidad == 5:
-            paciente.categoria == "rojo"
+            Pac_En_Cola[i].categoria == "rojo"
+            PuntitosSEspera[i][2] = (255, 0, 0)

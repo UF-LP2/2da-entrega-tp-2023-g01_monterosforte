@@ -151,13 +151,10 @@ class cHospitalApp(QMainWindow):
 
 
         self.timer_EntradaPacientes.timeout.connect(lambda:self.planoHospital.actualizarPacientes(self.CantActualEnfermeros))
-        self.timer_EntradaPacientes.start(1000)
-
+        self.timer_EntradaPacientes.start(1001)
+        
         self.timer_Triage_SalaEspera.timeout.connect(lambda:self.planoHospital.ActualizarPacientes_SalaEspera(self.CantActualEnfermeros))
-        self.timer_Triage_SalaEspera.start(3000)
-
-        self.timer_SalaEspera.timeout.connect(lambda:self.planoHospital.ActualizacionSEsepera_2())
-        self.timer_SalaEspera.start(1000)
+        self.timer_Triage_SalaEspera.start(2000)
 
 
     def generarPausa(self):

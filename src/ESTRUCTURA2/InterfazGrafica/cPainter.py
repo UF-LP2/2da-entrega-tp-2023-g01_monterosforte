@@ -1,3 +1,5 @@
+import typing
+from PyQt6 import QtGui
 from PyQt6.QtWidgets import QWidget, QSizePolicy
 from PyQt6.QtGui import QPainter, QPen, QColor, QBrush
 from PyQt6.QtCore import Qt, QTimer
@@ -36,13 +38,15 @@ class cPainter(QWidget): #Va a dibujar el plano
 
 		self.PuntitosRecepcion = []
 		self.PuntitosSEspera = []
+		self.PuntitosSMedico = []
 		self.puntitosTotales = []
 
 		### variables relacionadas a pacientes
 		self.pacientesRecepcion = []
+		self.seTriagearon = []
 		self.Posibles_Nombres = read_nombre()
 		self.Arbolito = inicilizacion_Arbol()
-		self.pacientesSEspera = [] ### pacientes que va a manejar la sala de espera
+		self.PacEnCola = [] ### pacientes que va a manejar la sala de espera
 		self.listaSalas = []
 
 
@@ -96,9 +100,9 @@ class cPainter(QWidget): #Va a dibujar el plano
 			for i in range(0, self.cantSalasMedicos):
 
 				self.painter.drawRect(int(XSMedico) + i*int(self.AnchoSMedico), int(YSMedico), int(self.AnchoSMedico), int(self.AlturaSMedico))
-				sala = (cSala(True), int(XSMedico+ (self.AnchoSMedico/2) + i*(self.AnchoSMedico)), int(YSMedico+ (self.AlturaSMedico/2)))
-
-				self.listaSalas.append(sala)
+				sala = (cSala(True), int(XSMedico + (self.AnchoSMedico/2) + i*(self.AnchoSMedico)), int(YSMedico+ (self.AlturaSMedico/2)))
+				if len(self.listaSalas) < self.cantSalasMedicos:
+					self.listaSalas.append(sala)
 
 		if self.botonIniciarApretado:
 
@@ -113,14 +117,23 @@ class cPainter(QWidget): #Va a dibujar el plano
 				x, y, color = self.PuntitosSEspera[i][0], self.PuntitosSEspera[i][1], self.PuntitosSEspera[i][2]
 				self.painter.setBrush(QBrush(QColor(*color)))
 				self.painter.drawEllipse(x, y, 10, 10)
+			
+			for i in range(0, len(self.PuntitosSMedico)):
+				x,y,color = self.PuntitosSMedico[i][0], self.PuntitosSMedico[i][1], self.PuntitosSMedico[i][2]
+				self.painter.setBrush(QBrush(QColor(*color)))
+				self.painter.drawEllipse(x, y, 10, 10)
 
 
 
 		self.painter.end()
 
+
+		
 	def actualizarPacientes(self, CantEnfermeros:int):
 		listita =[]
+
 		for i in range(0, random.randint(0,CantEnfermeros)):
+			listita.clear()
 			nuevo = cPaciente(random.choice(self.Posibles_Nombres))
 			self.pacientesRecepcion.append(nuevo)
 
@@ -134,15 +147,21 @@ class cPainter(QWidget): #Va a dibujar el plano
 			listita.append(XUSRecepcion)
 			listita.append(YUSRecepcion)
 			listita.append(color)
-			self.PuntitosRecepcion.append(listita)
+			self.PuntitosRecepcion.append(listita.copy())
 		
 
 		self.update()
-	
+
+
 	def ActualizarPacientes_SalaEspera(self, CantEnfermeros):
 		listita = []
 		i = 0
+		self.seTriagearon = []
+
 		while(len(self.pacientesRecepcion) > i and i != CantEnfermeros):
+
+			listita.clear()
+
 			TriageArbol(self.pacientesRecepcion[i], self.Arbolito)
 
 			XSEspera = random.randint(int(self.width()/2), int(self.width()/2 + self.AnchoSEspera)-10)
@@ -162,19 +181,41 @@ class cPainter(QWidget): #Va a dibujar el plano
 			listita.append(XSEspera)
 			listita.append(YSEspera)
 			listita.append(color1)
-			self.PuntitosSEspera.append(listita)
+			self.PuntitosSEspera.append(listita.copy())
 
-			if len(self.PuntitosRecepcion) > 0:
-				self.PuntitosRecepcion.pop()
+			self.seTriagearon.append(self.pacientesRecepcion.pop(i))
 
 			i += 1
 		
-		self.update()
-	
-	def ActualizacionSEsepera_2(self):
 		try:
-			Sala_De_Espera(self.pacientesRecepcion[0:len(self.PuntitosSEspera)],self.pacientesSEspera, self.listaSalas, self.PuntitosSEspera)
+			Sala_De_Espera(self.seTriagearon, self.PacEnCola, self.listaSalas, self.PuntitosSEspera, self.PuntitosSMedico)
+
+			self.SimulacionTiempo(self.PacEnCola, self.PuntitosSEspera, self.listaSalas, self.PuntitosSMedico)
 		except ExcepcionListaVacia as e:
 			print(str(e))
 		
 		self.update()
+	
+
+	def SimulacionTiempo(self, listaSalaEspera:list[cPaciente], PuntitosSEspera: list, listaSalas: list, PuntitosSMedico: list):
+
+
+		for i in range(0,len(listaSalaEspera)):
+			listaSalaEspera[i].tiempoEspera -= 2
+			if listaSalaEspera[i].tiempoEspera < 0:
+				print("Se le acabo el tiempo. Categoria: ", listaSalaEspera[i].categoria)
+				PuntitosSEspera[i][2] = (0, 0, 0)
+
+		for i in range(0, len(listaSalas)):
+			j=0
+			if listaSalas[i][0].tiempoOcupado <= 0 and listaSalas[i][0].disponible == False:
+				listaSalas[i][0].disponible = True
+				print("Se jue")
+				while( j<len(listaSalas) and j < len(PuntitosSMedico)):
+					if i == PuntitosSMedico[j][3]:
+						PuntitosSMedico.pop(j)
+					j+=1
+
+			elif listaSalas[i][0].disponible == False:
+				listaSalas[i][0].tiempoOcupado -= 2
+				

@@ -184,6 +184,7 @@ class cPainter(QWidget): #Va a dibujar el plano
 			self.PuntitosSEspera.append(listita.copy())
 
 			self.seTriagearon.append(self.pacientesRecepcion.pop(i))
+			self.PuntitosRecepcion.pop(i)
 
 			i += 1
 		

@@ -132,13 +132,6 @@ class cHospitalApp(QMainWindow):
         self.planoHospital.botonIniciarApretado = True
         self.planoHospital.planoGenerado = True
 
-
-
-
-
-
-
-
         turnoString = self.selectorTurno.currentText() #Se traduce el turno a la cantidad de enfermeros
         if turnoString == "23 a 6 hs":
             self.CantActualEnfermeros = 1
@@ -154,7 +147,7 @@ class cHospitalApp(QMainWindow):
         self.timer_EntradaPacientes.start(1001)
         
         self.timer_Triage_SalaEspera.timeout.connect(lambda:self.planoHospital.ActualizarPacientes_SalaEspera(self.CantActualEnfermeros))
-        self.timer_Triage_SalaEspera.start(2000)
+        self.timer_Triage_SalaEspera.start(1000)
 
 
     def generarPausa(self):

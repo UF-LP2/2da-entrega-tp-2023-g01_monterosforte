@@ -45,7 +45,7 @@ def Sala_De_Espera(listaPacientes:list[cPaciente], Pac_En_Cola: list[cPaciente],
                 print(str(e))
 
             listaSalas[i][0].disponible = False
-            listaSalas[i][0].tiempoOcupado = 2
+            listaSalas[i][0].tiempoOcupado = 4
         i += 1
     
 

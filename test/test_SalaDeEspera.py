@@ -2,8 +2,6 @@ from src.ESTRUCTURA2.SalaEsperaDyC import Sala_De_Espera, Atender
 from src.ESTRUCTURA2.cPaciente import cPaciente
 import pytest
 from src.ESTRUCTURA2.Exceptions import ExcepcionListaVacia
-from src.ESTRUCTURA2.cSala import cSala
-
 
 def test_Atender1(): #Lista PAR.
     pac1 = cPaciente("Juan", 1978, 123456, 8)
@@ -47,6 +45,7 @@ def test_Atender2(): #Lista IMPAR.
 
     paciente = Atender(listaPacientes)
     assert paciente == pac1
+
 
 def test_SalaDeEspera1(): #Obtiene lista VACIA.
 

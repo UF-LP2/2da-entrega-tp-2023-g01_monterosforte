@@ -76,8 +76,11 @@ def inicilizacion_Arbol():
 
 def TriageArbol(Paciente:cPaciente, Arbol:Triage_tree):
 
-    PesoTotal = Categorizacion(Arbol)
-    
+    try:
+        PesoTotal = Categorizacion(Arbol)
+    except ExcepcionNodoVacio as e:
+        print(str(e))
+        
     if PesoTotal > 0 and PesoTotal <= 55:
         Paciente.categoria = "rojo"
         Paciente.tiempoEspera = 1

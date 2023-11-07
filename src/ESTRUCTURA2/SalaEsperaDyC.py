@@ -52,6 +52,7 @@ def Sala_De_Espera(listaPacientes:list[cPaciente], Pac_En_Cola: list[cPaciente],
 
     if len(Pac_En_Cola) >= 1:
         SimulacionEmpeoramiento(Pac_En_Cola, PuntitosSEspera)
+        SimulacionAzules(Pac_En_Cola, PuntitosSEspera)
 
 
 
@@ -109,3 +110,15 @@ def SimulacionEmpeoramiento(Pac_En_Cola: list[cPaciente], PuntitosSEspera):
         if probabilidad == 5:
             Pac_En_Cola[i].categoria == "rojo"
             PuntitosSEspera[i][2] = (255, 0, 0)
+    
+def SimulacionAzules(Pac_En_Cola: list[cPaciente], PuntitosSEspera:list):
+    if len(Pac_En_Cola) >= 25:
+        i= 0
+        cont = 0
+        RND = random.randint(1,2)
+        while(i < len(Pac_En_Cola) and cont != RND):
+            if Pac_En_Cola[i].categoria == "azul":
+                Pac_En_Cola.pop(i)
+                PuntitosSEspera.pop(i)
+                cont += 1
+            i+=1

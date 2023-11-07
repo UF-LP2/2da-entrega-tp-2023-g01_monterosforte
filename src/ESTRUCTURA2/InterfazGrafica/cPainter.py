@@ -98,11 +98,14 @@ class cPainter(QWidget): #Va a dibujar el plano
 			YSMedico = YSEspera - self.AlturaSMedico
 			
 			for i in range(0, self.cantSalasMedicos):
-
+				sala = []
 				self.painter.drawRect(int(XSMedico) + i*int(self.AnchoSMedico), int(YSMedico), int(self.AnchoSMedico), int(self.AlturaSMedico))
-				sala = (cSala(True), int(XSMedico + (self.AnchoSMedico/2) + i*(self.AnchoSMedico)), int(YSMedico+ (self.AlturaSMedico/2)))
+				sala.append(cSala(True)) #0
+				sala.append(int(XSMedico + (self.AnchoSMedico/2) + i*(self.AnchoSMedico))) #1
+				sala.append(int(YSMedico+ (self.AlturaSMedico/2))) #2
 				if len(self.listaSalas) < self.cantSalasMedicos:
 					self.listaSalas.append(sala)
+
 			font = QFont("Arial", 12)
 			font.setBold(True)
 			font.setItalic(True)
@@ -133,14 +136,20 @@ class cPainter(QWidget): #Va a dibujar el plano
 				self.painter.drawEllipse(x, y, 10, 10)
 
 			for i in range(0, len(self.PuntitosSEspera)):
-				x, y, color = self.PuntitosSEspera[i][0], self.PuntitosSEspera[i][1], self.PuntitosSEspera[i][2]
+				XSEspera = random.randint(int(self.width()/2), int(self.width()/2 + self.AnchoSEspera)-10)
+				YSEspera = random.randint(int(self.height()/2), int(self.height()/2 + self.AlturaSEspera) -10)
+
+				x, y, color = XSEspera, YSEspera, self.PuntitosSEspera[i][2]
 				self.painter.setBrush(QBrush(QColor(*color)))
 				self.painter.drawEllipse(x, y, 10, 10)
 			
 			for i in range(0, len(self.PuntitosSMedico)):
-				x,y,color = self.PuntitosSMedico[i][0], self.PuntitosSMedico[i][1], self.PuntitosSMedico[i][2]
-				self.painter.setBrush(QBrush(QColor(*color)))
-				self.painter.drawEllipse(x, y, 10, 10)
+				for j in range(0, len(self.listaSalas)):
+					if j == self.PuntitosSMedico[i][3]:
+						x,y,color = int(XSMedico + (self.AnchoSMedico/2) + j*(self.AnchoSMedico)), int(YSMedico+ (self.AlturaSMedico/2)), self.PuntitosSMedico[i][2]
+						self.painter.setBrush(QBrush(QColor(*color)))
+						self.painter.drawEllipse(x, y, 10, 10)
+
 
 
 

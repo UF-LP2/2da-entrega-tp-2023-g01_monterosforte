@@ -1,9 +1,7 @@
 from PyQt6.QtCore import Qt, QTimer
-from PyQt6.QtGui import QPainter, QColor, QBrush
+from PyQt6.QtGui import QPainter, QColor, QBrush, QScreen
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QPushButton, QVBoxLayout, QSpinBox, QLabel, QGridLayout, QComboBox, QSizePolicy
-
 from src.ESTRUCTURA2.InterfazGrafica.cPainter import cPainter
-
 
 class cHospitalApp(QMainWindow):
     CantActualEnfermeros= 0
@@ -13,14 +11,19 @@ class cHospitalApp(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        self.altura = 600
-        self.ancho = 1600
-        self.ejex = 100
-        self.ejey = 100
+        self.altura = 500
+        self.ancho = 1100
+        self.ejex = 10
+        self.ejey = 50
 
         self.botonPausarApretado = False
 
-        self.setGeometry(self.ejex, self.ejey, self.ancho, self.altura)
+        ''' screen = QApplication.primaryScreen()
+        screen_geometry = screen.availableGeometry()
+        width, height = screen_geometry.width(), screen_geometry.height()
+
+        self.setGeometry(width // 5, height // 5, width , height )'''
+        self.setGeometry(self.ejex, self.ejey, self.ancho, self.altura  )
         self.setWindowTitle('SIMULACION')
 
         ###creamos los botones, labels, etc

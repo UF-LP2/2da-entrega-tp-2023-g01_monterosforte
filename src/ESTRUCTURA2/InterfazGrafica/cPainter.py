@@ -70,24 +70,27 @@ class cPainter(QWidget): #Va a dibujar el plano
 		self.AnchoPasillo = self.width()/10
 
 		if self.planoGenerado:
-
+			#DIBUJO SALA DE ESPERA
 			XSEspera = self.width()/2
 			YSEspera = self.height()/2
 
-			self.painter.drawRect(int(XSEspera), int(YSEspera), int(self.AnchoSEspera), int(self.AlturaSEspera)) #DIBUJO SALA DE ESPERA
+			self.painter.drawRect(int(XSEspera), int(YSEspera), int(self.AnchoSEspera), int(self.AlturaSEspera)) 
 
+			#DIBUJO PASILLO
 			XPasillo = self.width()/2 - self.AnchoPasillo
 			YPasillo = (self.height() + self.AlturaSEspera - self.AlturaPasillo)/2
+			
+			self.painter.drawRect(int(XPasillo), int(YPasillo), int(self.AnchoPasillo), int(self.AlturaPasillo)) 
 
-			self.painter.drawRect(int(XPasillo), int(YPasillo), int(self.AnchoPasillo), int(self.AlturaPasillo)) #DIBUJO PASILLO
-
+			#DIBUJO SALA DE RECEPCION
 			XSRecepcion = XPasillo - self.AnchoSRecepcion
 			YSRecepcion = (self.height() + self.AlturaSEspera - self.AlturaSRecepcion)/2
 
-			self.painter.drawRect(int(XSRecepcion), int(YSRecepcion), int(self.AnchoSRecepcion), int(self.AlturaSRecepcion)) #DIBUJO SALA DE RECEPCION
+			self.painter.drawRect(int(XSRecepcion), int(YSRecepcion), int(self.AnchoSRecepcion), int(self.AlturaSRecepcion)) 
 
-			EspacioSEspera_SMedico = 15
-			self.AnchoSMedico = int((self.AnchoSEspera - 2*EspacioSEspera_SMedico)/self.cantSalasMedicos)  #DIBUJO SALAS DE MEDICOS
+			#DIBUJO SALAS DE MEDICOS
+			EspacioSEspera_SMedico = 15 #Espacio que deja entre el borde de la sala de espera para empezar a dibujar las salas de medicos
+			self.AnchoSMedico = (self.AnchoSEspera - 2*EspacioSEspera_SMedico)/self.cantSalasMedicos
 			self.AlturaSMedico = self.AnchoSMedico
 
 			if self.AnchoSMedico > 70:
@@ -100,9 +103,10 @@ class cPainter(QWidget): #Va a dibujar el plano
 			for i in range(0, self.cantSalasMedicos):
 				sala = []
 				self.painter.drawRect(int(XSMedico) + i*int(self.AnchoSMedico), int(YSMedico), int(self.AnchoSMedico), int(self.AlturaSMedico))
+				#Me creo las salas con el (x,y) del centro de la sala, donde se colocan a los puntitos
 				sala.append(cSala(True)) #0
-				sala.append(int(XSMedico + (self.AnchoSMedico/2) + i*(self.AnchoSMedico))) #1
-				sala.append(int(YSMedico+ (self.AlturaSMedico/2))) #2
+				sala.append(int(XSMedico + (self.AnchoSMedico/2) + i*(self.AnchoSMedico))) # X
+				sala.append(int(YSMedico+ (self.AlturaSMedico/2))) # Y
 				if len(self.listaSalas) < self.cantSalasMedicos:
 					self.listaSalas.append(sala)
 
@@ -111,30 +115,31 @@ class cPainter(QWidget): #Va a dibujar el plano
 			font.setItalic(True)
 			self.painter.setFont(font)
 			self.painter.setPen(QColor(0,0,0))
-			XContadorSE = XSEspera + self.AnchoSEspera/2
+			XContadorSE = XSEspera
 			YContadorSE = YSEspera + self.AlturaSEspera + 20
-			self.painter.drawText(int(XContadorSE), int(YContadorSE), f"Cantidad en sala: {len(self.PuntitosSEspera)}")
+			self.painter.drawText(int(XContadorSE), int(YContadorSE), f"Cantidad en sala de espera: {len(self.PuntitosSEspera)}")
 
-			XContadorSR = XSRecepcion + self.AnchoSRecepcion/2
+			XContadorSR = XSRecepcion
 			YContadorSR = YSRecepcion + self.AlturaSRecepcion + 20
-			self.painter.drawText(int(XContadorSR), int(YContadorSR), f"Cantidad en sala: {len(self.PuntitosRecepcion)}")
+			self.painter.drawText(int(XContadorSR), int(YContadorSR), f"Cantidad en recepción: {len(self.PuntitosRecepcion)}")
 
 		if self.botonIniciarApretado:
 
 			self.painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
+			#DIBUJO PUNTITOS DE SALA DE RECEPCION
 			for i in range(0, len(self.PuntitosRecepcion)):
 				XSRecepcion = int(self.width()/2 -self.AnchoPasillo - self.AnchoSRecepcion)
 				YSRecepcion = int((self.height() + self.AlturaSEspera - self.AlturaSRecepcion)/2)
 
 				XUSRecepcion = random.randint(XSRecepcion, int(XSRecepcion + self.AnchoSRecepcion)-10)
 				YUSRecepcion = random.randint(YSRecepcion, int(YSRecepcion + self.AlturaSRecepcion)-10)
-				
-				#x, y, color = self.PuntitosRecepcion[i][0] , self.PuntitosRecepcion[i][1], self.PuntitosRecepcion[i][2]
+
 				x, y, color = XUSRecepcion , YUSRecepcion, self.PuntitosRecepcion[i][2]
 				self.painter.setBrush(QBrush(QColor(*color)))
 				self.painter.drawEllipse(x, y, 10, 10)
 
+			#DIBUJO PUNTITOS DE SALA DE ESPERA
 			for i in range(0, len(self.PuntitosSEspera)):
 				XSEspera = random.randint(int(self.width()/2), int(self.width()/2 + self.AnchoSEspera)-10)
 				YSEspera = random.randint(int(self.height()/2), int(self.height()/2 + self.AlturaSEspera) -10)
@@ -143,6 +148,7 @@ class cPainter(QWidget): #Va a dibujar el plano
 				self.painter.setBrush(QBrush(QColor(*color)))
 				self.painter.drawEllipse(x, y, 10, 10)
 			
+			#DIBUJO PUNTITOS DE CADA SALA DE MEDICOS
 			for i in range(0, len(self.PuntitosSMedico)):
 				for j in range(0, len(self.listaSalas)):
 					if j == self.PuntitosSMedico[i][3]:
@@ -154,10 +160,8 @@ class cPainter(QWidget): #Va a dibujar el plano
 
 
 		self.painter.end()
-
-
-		
-	def actualizarPacientes(self, CantEnfermeros:int):
+	
+	def actualizarPacientes(self, CantEnfermeros:int): #SE ENCARGA DE LOS PACIENTES DE RECEPCION
 		listita =[]
 
 		for i in range(0, random.randint(0,CantEnfermeros)):
@@ -165,23 +169,17 @@ class cPainter(QWidget): #Va a dibujar el plano
 			nuevo = cPaciente(random.choice(self.Posibles_Nombres))
 			self.pacientesRecepcion.append(nuevo)
 
-			XSRecepcion = int(self.width()/2 -self.AnchoPasillo - self.AnchoSRecepcion)
-			YSRecepcion = int((self.height() + self.AlturaSEspera - self.AlturaSRecepcion)/2)
-
-			XUSRecepcion = random.randint(XSRecepcion, int(XSRecepcion + self.AnchoSRecepcion)-10)
-			YUSRecepcion = random.randint(YSRecepcion, int(YSRecepcion + self.AlturaSRecepcion)-10)
-
 			color = (200, 200, 200)
-			listita.append(XUSRecepcion)
-			listita.append(YUSRecepcion)
+
+			listita.append(0)
+			listita.append(0)
 			listita.append(color)
 			self.PuntitosRecepcion.append(listita.copy())
 		
-
 		self.update()
 
 
-	def ActualizarPacientes_SalaEspera(self, CantEnfermeros):
+	def ActualizarPacientes_SalaEspera(self, CantEnfermeros): #SE ENCARGA DE LOS PACIENTES DE SALA DE ESPERA
 		listita = []
 		i = 0
 		self.seTriagearon = []
@@ -191,10 +189,7 @@ class cPainter(QWidget): #Va a dibujar el plano
 			listita.clear()
 
 			TriageArbol(self.pacientesRecepcion[i], self.Arbolito)
-
-			XSEspera = random.randint(int(self.width()/2), int(self.width()/2 + self.AnchoSEspera)-10)
-			YSEspera = random.randint(int(self.height()/2), int(self.height()/2 + self.AlturaSEspera) -10)
-
+	
 			if self.pacientesRecepcion[i].categoria == "rojo":
 				color1 = (255, 0, 0)
 			elif self.pacientesRecepcion[i].categoria == "naranja":
@@ -206,11 +201,11 @@ class cPainter(QWidget): #Va a dibujar el plano
 			elif self.pacientesRecepcion[i].categoria == "azul":
 				color1 = (0, 0, 255)
 
-			listita.append(XSEspera)
-			listita.append(YSEspera)
+			listita.append(0)
+			listita.append(0)
 			listita.append(color1)
 			self.PuntitosSEspera.append(listita.copy())
-
+ 
 			self.seTriagearon.append(self.pacientesRecepcion.pop(i))
 			self.PuntitosRecepcion.pop(i)
 
@@ -228,7 +223,6 @@ class cPainter(QWidget): #Va a dibujar el plano
 
 	def SimulacionTiempo(self, listaSalaEspera:list[cPaciente], PuntitosSEspera: list, listaSalas: list, PuntitosSMedico: list):
 
-
 		for i in range(0,len(listaSalaEspera)):
 			listaSalaEspera[i].tiempoEspera -= 2
 			if listaSalaEspera[i].tiempoEspera < 0:
@@ -239,9 +233,10 @@ class cPainter(QWidget): #Va a dibujar el plano
 			j=0
 			if listaSalas[i][0].tiempoOcupado <= 0 and listaSalas[i][0].disponible == False:
 				listaSalas[i][0].disponible = True
-				print("Se jue")
+				
 				while( j<len(listaSalas) and j < len(PuntitosSMedico)):
 					if i == PuntitosSMedico[j][3]:
+						print(f"Fue atendido un paciente y se retiro.")
 						PuntitosSMedico.pop(j)
 					j+=1
 

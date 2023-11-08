@@ -23,7 +23,7 @@ def main() -> None:
   listaSalas = []
   for i in range(0, NSalas): ###
     sala = cSala(True)
-    .append(sala)
+    listaSalas.append(sala)
 
   flag = 1
 

@@ -13,14 +13,14 @@ def Sala_De_Espera(listaPacientes:list[cPaciente], Pac_En_Cola: list[cPaciente],
     
     i=0
 
-    while(i != len(listaPacientes)):
+    while(i != len(listaPacientes)): #O(n)
         Pac_En_Cola.append(listaPacientes[i])
 
         i+=1
 
     i = 0
 
-    while(i<len(listaSalas) and len(Pac_En_Cola) > 0):
+    while(i<len(listaSalas) and len(Pac_En_Cola) > 0): #O(n2)
         listita = []
         if listaSalas[i][0].disponible == True:
             try:
@@ -56,7 +56,7 @@ def Sala_De_Espera(listaPacientes:list[cPaciente], Pac_En_Cola: list[cPaciente],
 
 
 
-def Atender(Pac_En_Cola:cPaciente) -> cPaciente:
+def Atender(Pac_En_Cola:cPaciente) -> cPaciente: 
     if len(Pac_En_Cola) == 0:
         raise ExcepcionListaVacia
     elif len(Pac_En_Cola) == 1:
@@ -89,26 +89,26 @@ def SimulacionEmpeoramiento(Pac_En_Cola: list[cPaciente], PuntitosSEspera):
     if Pac_En_Cola[i].categoria == "azul":
         probabilidad = random.randint(0,100)
         if probabilidad == 50:
-            Pac_En_Cola[i].categoria == "verde"
+            Pac_En_Cola[i].categoria = "verde"
             PuntitosSEspera[i][2] = (0, 255, 0)
             
 
     if Pac_En_Cola[i].categoria == "verde":
         probabilidad = random.randint(0,70)
         if probabilidad == 35:
-            Pac_En_Cola[i].categoria == "amarillo"
+            Pac_En_Cola[i].categoria = "amarillo"
             PuntitosSEspera[i][2] = (255, 255, 0)       
 
     if Pac_En_Cola[i].categoria == "amarillo":
         probabilidad = random.randint(0,40)
         if probabilidad == 20:
-            Pac_En_Cola[i].categoria == "naranja"
+            Pac_En_Cola[i].categoria = "naranja"
             PuntitosSEspera[i][2] = (255, 128, 0)
                     
     if Pac_En_Cola[i].categoria == "naranja":
         probabilidad = random.randint(0,10)
         if probabilidad == 5:
-            Pac_En_Cola[i].categoria == "rojo"
+            Pac_En_Cola[i].categoria = "rojo"
             PuntitosSEspera[i][2] = (255, 0, 0)
     
 def SimulacionAzules(Pac_En_Cola: list[cPaciente], PuntitosSEspera:list):

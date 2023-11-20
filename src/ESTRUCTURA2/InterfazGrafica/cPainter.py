@@ -100,6 +100,7 @@ class cPainter(QWidget): #Va a dibujar el plano
 			XSMedico = XSEspera + EspacioSEspera_SMedico
 			YSMedico = YSEspera - self.AlturaSMedico
 			
+			
 			for i in range(0, self.cantSalasMedicos):
 				sala = []
 				self.painter.drawRect(int(XSMedico) + i*int(self.AnchoSMedico), int(YSMedico), int(self.AnchoSMedico), int(self.AlturaSMedico))
@@ -109,6 +110,8 @@ class cPainter(QWidget): #Va a dibujar el plano
 				sala.append(int(YSMedico+ (self.AlturaSMedico/2))) # Y
 				if len(self.listaSalas) < self.cantSalasMedicos:
 					self.listaSalas.append(sala)
+				else:
+					print("Si hay problema aca")
 
 			font = QFont("Arial", 12)
 			font.setBold(True)
@@ -154,7 +157,7 @@ class cPainter(QWidget): #Va a dibujar el plano
 					if j == self.PuntitosSMedico[i][3]:
 						x,y,color = int(XSMedico + (self.AnchoSMedico/2) + j*(self.AnchoSMedico)), int(YSMedico+ (self.AlturaSMedico/2)), self.PuntitosSMedico[i][2]
 						self.painter.setBrush(QBrush(QColor(*color)))
-						self.painter.drawEllipse(x, y, 10, 10)
+						self.painter.drawEllipse(x-5, y-5, 10, 10)
 
 
 

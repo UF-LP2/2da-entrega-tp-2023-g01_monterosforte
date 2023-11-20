@@ -115,6 +115,10 @@ class cHospitalApp(QMainWindow):
     def generarPlano(self): #Esta funcion ocurre al apretar el boton generar plano de hospital.
         self.planoHospital.PuntitosRecepcion.clear() 
         self.planoHospital.PuntitosSEspera.clear()
+        self.planoHospital.PuntitosSMedico.clear()
+        self.planoHospital.pacientesRecepcion.clear()
+        self.planoHospital.PacEnCola.clear()
+        self.planoHospital.listaSalas.clear()
 
         self.planoHospital.planoGenerado = True
         self.planoHospital.botonIniciarApretado = False
@@ -153,5 +157,8 @@ class cHospitalApp(QMainWindow):
         self.timer_Triage_SalaEspera.start(1000)
 
     def generarPausa(self):
+        self.timer_EntradaPacientes.timeout.disconnect()
+        self.timer_Triage_SalaEspera.timeout.disconnect()
         self.timer_EntradaPacientes.stop()  # Detener el temporizador de recepcion.
         self.timer_Triage_SalaEspera.stop() #Detener el temporizador de sala de espera.
+        self.botonGenerarPlano.setEnabled(True)

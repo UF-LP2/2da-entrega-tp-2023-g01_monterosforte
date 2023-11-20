@@ -3,6 +3,7 @@ from PyQt6.QtGui import QPainter, QColor, QBrush, QScreen
 from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QHBoxLayout, QPushButton, QVBoxLayout, QSpinBox, QLabel, QGridLayout, QComboBox, QSizePolicy
 from src.ESTRUCTURA2.InterfazGrafica.cPainter import cPainter
 
+#comentario cualquiera
 class cHospitalApp(QMainWindow):
     CantActualEnfermeros= 0
 
